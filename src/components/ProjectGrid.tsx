@@ -1,8 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import { Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
 import ProjectCard, { type ProjectCardProps } from "@/components/ProjectCard";
 
 interface ProjectGridProps {
@@ -14,10 +16,10 @@ const ALL_LANGUAGES = "all";
 
 function uniqueLanguages(projects: ProjectCardProps[]): string[] {
   const set = new Set<string>();
-  for (const p of projects) {
-    if (p.language) set.add(p.language);
+  for (const project of projects) {
+    if (project.language) set.add(project.language);
   }
-  return Array.from(set).sort();
+  return [...set].sort();
 }
 
 function matchesQuery(project: ProjectCardProps, query: string): boolean {
@@ -25,7 +27,7 @@ function matchesQuery(project: ProjectCardProps, query: string): boolean {
   const q = query.toLowerCase();
   if (project.name.toLowerCase().includes(q)) return true;
   if (project.description?.toLowerCase().includes(q)) return true;
-  return project.topics.some((t) => t.toLowerCase().includes(q));
+  return project.topics.some((topic) => topic.toLowerCase().includes(q));
 }
 
 export default function ProjectGrid({ projects, showFilters = false }: ProjectGridProps) {
@@ -35,9 +37,9 @@ export default function ProjectGrid({ projects, showFilters = false }: ProjectGr
   const languages = useMemo(() => uniqueLanguages(projects), [projects]);
 
   const visibleProjects = useMemo(() => {
-    return projects.filter((p) => {
-      if (activeLanguage !== ALL_LANGUAGES && p.language !== activeLanguage) return false;
-      return matchesQuery(p, searchQuery);
+    return projects.filter((project) => {
+      if (activeLanguage !== ALL_LANGUAGES && project.language !== activeLanguage) return false;
+      return matchesQuery(project, searchQuery);
     });
   }, [projects, activeLanguage, searchQuery]);
 
@@ -45,91 +47,63 @@ export default function ProjectGrid({ projects, showFilters = false }: ProjectGr
     <section className="flex flex-col gap-6">
       {showFilters ? (
         <div className="flex flex-col gap-4">
-          <label className="glass-subtle flex items-center gap-3 px-4 py-2.5 rounded-full">
-            <Search size={15} strokeWidth={1.75} className="text-white/40" aria-hidden />
-            <input
-              type="text"
+          <div className="relative">
+            <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
+            <Input
+              type="search"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="search projects, topics, descriptions..."
-              className="flex-1 bg-transparent text-sm text-white/90 placeholder:text-white/30 focus:outline-none"
+              placeholder="search projects, topics, descriptions…"
+              className="h-11 pl-10 text-base"
               aria-label="Search projects"
             />
-          </label>
+          </div>
 
           {languages.length > 0 ? (
-            <div className="flex flex-wrap gap-2">
-              <FilterChip
-                label="all"
-                active={activeLanguage === ALL_LANGUAGES}
-                onClick={() => setActiveLanguage(ALL_LANGUAGES)}
-              />
-              {languages.map((lang) => (
-                <FilterChip
-                  key={lang}
-                  label={lang}
-                  active={activeLanguage === lang}
-                  onClick={() => setActiveLanguage(lang)}
-                />
-              ))}
-            </div>
+            <Tabs value={activeLanguage} onValueChange={setActiveLanguage}>
+              <TabsList className="h-auto flex-wrap justify-start gap-1 bg-transparent p-0">
+                <TabsTrigger
+                  value={ALL_LANGUAGES}
+                  className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                >
+                  all
+                </TabsTrigger>
+                {languages.map((lang) => (
+                  <TabsTrigger
+                    key={lang}
+                    value={lang}
+                    className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                  >
+                    {lang.toLowerCase()}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </Tabs>
           ) : null}
         </div>
       ) : null}
 
-      <p className="font-mono text-xs text-white/40">
-        showing {visibleProjects.length} of {projects.length} project{projects.length === 1 ? "" : "s"}
+      <p className="text-sm text-muted-foreground" aria-live="polite">
+        showing {visibleProjects.length} of {projects.length}{" "}
+        {projects.length === 1 ? "project" : "projects"}
       </p>
 
       {visibleProjects.length === 0 ? (
-        <div role="status" className="glass rounded-3xl p-10 text-center">
-          <p className="text-base text-white/70">no projects match your filters.</p>
-          <p className="mt-2 text-base text-white/40">try clearing the search or selecting another language.</p>
-        </div>
+        <Card>
+          <CardContent className="py-12 text-center">
+            <p className="text-base text-foreground">no projects match your filters.</p>
+            <p className="mt-2 text-sm text-muted-foreground">
+              try clearing the search or selecting another language.
+            </p>
+          </CardContent>
+        </Card>
       ) : (
-        <motion.div
-          layout
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
-        >
-          <AnimatePresence mode="popLayout">
-            {visibleProjects.map((project, i) => (
-              <motion.div
-                key={project.url}
-                layout
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10, scale: 0.97 }}
-                transition={{ duration: 0.35, delay: i * 0.04 }}
-              >
-                <ProjectCard {...project} index={i} />
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {visibleProjects.map((project) => (
+            <ProjectCard key={project.url} {...project} />
+          ))}
+        </div>
       )}
     </section>
-  );
-}
-
-interface FilterChipProps {
-  label: string;
-  active: boolean;
-  onClick: () => void;
-}
-
-function FilterChip({ label, active, onClick }: FilterChipProps) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={active}
-      className={`min-h-[44px] px-4 py-2 rounded-full text-sm font-mono transition-all ${
-        active
-          ? "bg-accent/15 text-accent ring-1 ring-accent/40"
-          : "glass-subtle text-white/55 hover:text-white/85"
-      }`}
-    >
-      {label.toLowerCase()}
-    </button>
   );
 }

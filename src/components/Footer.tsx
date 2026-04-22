@@ -1,40 +1,30 @@
+import Link from "next/link";
 import { Coffee, Github } from "lucide-react";
-
-interface FooterLink {
-  label: string;
-  href: string;
-  Icon?: typeof Coffee;
-  external?: boolean;
-}
-
-const FOOTER_LINKS: FooterLink[] = [
-  { label: "rishithc.com", href: "https://rishithc.com", external: true },
-  { label: "buy me a coffee", href: "https://buymeacoffee.com/rishithc", Icon: Coffee, external: true },
-  { label: "github", href: "https://github.com/rishith-c", Icon: Github, external: true },
-];
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 
 export default function Footer() {
   return (
-    <footer className="relative z-10 mt-24 border-t border-white/5">
-      <div className="mx-auto max-w-6xl px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <p className="font-mono text-xs text-white/30">
-          © 2026 rishith chennupati. made with care.
+    <footer className="border-t bg-background">
+      <div className="mx-auto flex w-full max-w-6xl flex-col items-center justify-between gap-4 px-4 py-8 sm:flex-row sm:px-6">
+        <p className="text-sm text-muted-foreground">
+          © 2026 rishith chennupati · built with next.js + shadcn/ui
         </p>
-        <ul className="flex items-center gap-5">
-          {FOOTER_LINKS.map(({ label, href, Icon, external }) => (
-            <li key={label}>
-              <a
-                href={href}
-                target={external ? "_blank" : undefined}
-                rel={external ? "noopener noreferrer" : undefined}
-                className="flex items-center gap-1.5 font-mono text-xs text-white/30 hover:text-accent transition-colors"
-              >
-                {Icon ? <Icon size={13} strokeWidth={1.75} aria-hidden /> : null}
-                <span>{label}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
+        <div className="flex items-center gap-1">
+          <Button asChild variant="ghost" size="sm">
+            <Link href="https://github.com/rishith-c" target="_blank" rel="noopener noreferrer">
+              <Github className="size-4" />
+              github
+            </Link>
+          </Button>
+          <Separator orientation="vertical" className="h-5" />
+          <Button asChild variant="ghost" size="sm">
+            <Link href="https://buymeacoffee.com/rishithc" target="_blank" rel="noopener noreferrer">
+              <Coffee className="size-4" />
+              buy me a coffee
+            </Link>
+          </Button>
+        </div>
       </div>
     </footer>
   );

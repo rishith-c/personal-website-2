@@ -3,8 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { Mail, Github, Instagram } from "lucide-react";
+import { Github, Instagram, Mail, Menu } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
 
 interface NavLink {
   label: string;
@@ -33,74 +36,125 @@ const SOCIAL_LINKS: SocialLink[] = [
 export default function Navigation() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
+    const onScroll = () => setScrolled(window.scrollY > 16);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const isActive = (href: string): boolean => {
-    if (href === "/") return pathname === "/";
-    return pathname === href || pathname.startsWith(`${href}/`);
-  };
+  const isActive = (href: string): boolean =>
+    href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
 
   return (
-    <motion.nav
-      initial={{ y: -80, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[min(92vw,900px)]"
+    <header
+      className={cn(
+        "sticky top-0 z-40 w-full transition-all duration-200",
+        scrolled
+          ? "border-b bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+          : "border-b border-transparent",
+      )}
     >
-      <div
-        className={`flex items-center justify-between gap-6 px-5 py-2.5 rounded-full transition-all duration-300 ${
-          scrolled ? "glass-strong shadow-lg shadow-black/30" : "glass-subtle"
-        }`}
+      <nav
+        aria-label="Main"
+        className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-4 px-4 sm:px-6"
       >
         <Link
           href="/"
-          className="font-mono text-sm tracking-tight text-white/90 hover:text-accent transition-colors"
+          className="font-mono text-base font-semibold tracking-tight hover:text-primary transition-colors"
         >
-          rishith c.
+          rishith.c
         </Link>
 
-        <ul className="hidden md:flex items-center gap-1">
+        <ul className="hidden items-center gap-1 md:flex">
           {NAV_LINKS.map((link) => {
             const active = isActive(link.href);
             return (
               <li key={link.href}>
-                <Link
-                  href={link.href}
-                  aria-current={active ? "page" : undefined}
-                  className={`px-3 py-1.5 text-sm rounded-full transition-colors ${
-                    active
-                      ? "text-accent"
-                      : "text-white/60 hover:text-white/90"
-                  }`}
+                <Button
+                  asChild
+                  variant={active ? "secondary" : "ghost"}
+                  size="sm"
+                  className={cn(
+                    "text-sm font-medium",
+                    active ? "text-foreground" : "text-muted-foreground",
+                  )}
                 >
-                  {link.label}
-                </Link>
+                  <Link href={link.href} aria-current={active ? "page" : undefined}>
+                    {link.label}
+                  </Link>
+                </Button>
               </li>
             );
           })}
         </ul>
 
-        <div className="flex items-center gap-1">
+        <div className="hidden items-center gap-1 md:flex">
           {SOCIAL_LINKS.map(({ label, href, Icon, external }) => (
-            <a
-              key={label}
-              href={href}
-              aria-label={label}
-              target={external ? "_blank" : undefined}
-              rel={external ? "noopener noreferrer" : undefined}
-              className="p-2 rounded-full text-white/60 hover:text-accent hover:bg-white/5 transition-colors"
-            >
-              <Icon size={16} strokeWidth={1.75} />
-            </a>
+            <Button asChild key={label} variant="ghost" size="icon" aria-label={label} title={label}>
+              <a
+                href={href}
+                target={external ? "_blank" : undefined}
+                rel={external ? "noopener noreferrer" : undefined}
+              >
+                <Icon className="size-4" />
+              </a>
+            </Button>
           ))}
         </div>
-      </div>
-    </motion.nav>
+
+        <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+          <SheetTrigger
+            render={
+              <Button variant="ghost" size="icon" aria-label="Open menu" className="md:hidden" />
+            }
+          >
+            <Menu className="size-5" />
+          </SheetTrigger>
+          <SheetContent side="right" className="w-72">
+            <SheetTitle className="sr-only">Navigation</SheetTitle>
+            <div className="flex h-full flex-col gap-6 p-6">
+              <div className="font-mono text-base font-semibold">rishith.c</div>
+              <Separator />
+              <ul className="flex flex-col gap-1">
+                {NAV_LINKS.map((link) => {
+                  const active = isActive(link.href);
+                  return (
+                    <li key={link.href}>
+                      <Button
+                        asChild
+                        variant={active ? "secondary" : "ghost"}
+                        className="w-full justify-start text-base"
+                        onClick={() => setMobileOpen(false)}
+                      >
+                        <Link href={link.href} aria-current={active ? "page" : undefined}>
+                          {link.label}
+                        </Link>
+                      </Button>
+                    </li>
+                  );
+                })}
+              </ul>
+              <Separator />
+              <div className="flex items-center gap-2">
+                {SOCIAL_LINKS.map(({ label, href, Icon, external }) => (
+                  <Button asChild key={label} variant="outline" size="icon" aria-label={label}>
+                    <a
+                      href={href}
+                      target={external ? "_blank" : undefined}
+                      rel={external ? "noopener noreferrer" : undefined}
+                    >
+                      <Icon className="size-4" />
+                    </a>
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </SheetContent>
+        </Sheet>
+      </nav>
+    </header>
   );
 }

@@ -1,22 +1,12 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Star, GitFork, Github, ExternalLink } from "lucide-react";
+import Link from "next/link";
+import { ExternalLink, GitFork, Github, Star } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 
-export interface ProjectCardProps {
-  name: string;
-  description: string | null;
-  url: string;
-  homepage?: string | null;
-  language: string | null;
-  topics: string[];
-  stars: number;
-  forks: number;
-  pushedAt: string;
-  index?: number;
-}
-
-const LANGUAGE_COLORS: Readonly<Record<string, string>> = {
+const LANGUAGE_COLOR: Record<string, string> = {
   Swift: "#F05138",
   TypeScript: "#3178C6",
   JavaScript: "#F7DF1E",
@@ -36,24 +26,34 @@ const LANGUAGE_COLORS: Readonly<Record<string, string>> = {
 };
 
 const FALLBACK_LANG_COLOR = "#888888";
-const MAX_TOPICS = 6;
+
+export interface ProjectCardProps {
+  name: string;
+  description: string | null;
+  url: string;
+  homepage?: string | null;
+  language: string | null;
+  topics: string[];
+  stars: number;
+  forks: number;
+  pushedAt: string;
+}
 
 function formatRelativeTime(iso: string): string {
   const then = new Date(iso).getTime();
-  if (Number.isNaN(then)) return "";
-  const diffMs = Date.now() - then;
-  const sec = Math.max(1, Math.floor(diffMs / 1000));
-  if (sec < 60) return `${sec}s ago`;
-  const min = Math.floor(sec / 60);
-  if (min < 60) return `${min}m ago`;
-  const hr = Math.floor(min / 60);
-  if (hr < 24) return `${hr}h ago`;
-  const day = Math.floor(hr / 24);
-  if (day < 30) return `${day}d ago`;
-  const mo = Math.floor(day / 30);
-  if (mo < 12) return `${mo}mo ago`;
-  const yr = Math.floor(day / 365);
-  return `${yr}y ago`;
+  const now = Date.now();
+  const seconds = Math.max(1, Math.round((now - then) / 1000));
+  if (seconds < 60) return `${seconds}s ago`;
+  const minutes = Math.round(seconds / 60);
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.round(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  const days = Math.round(hours / 24);
+  if (days < 30) return `${days}d ago`;
+  const months = Math.round(days / 30);
+  if (months < 12) return `${months}mo ago`;
+  const years = Math.round(months / 12);
+  return `${years}y ago`;
 }
 
 export default function ProjectCard({
@@ -66,93 +66,84 @@ export default function ProjectCard({
   stars,
   forks,
   pushedAt,
-  index = 0,
 }: ProjectCardProps) {
-  const langColor = language ? LANGUAGE_COLORS[language] ?? FALLBACK_LANG_COLOR : FALLBACK_LANG_COLOR;
-  const visibleTopics = topics.slice(0, MAX_TOPICS);
+  const langColor = (language && LANGUAGE_COLOR[language]) ?? FALLBACK_LANG_COLOR;
+  const visibleTopics = topics.slice(0, 5);
 
   return (
-    <motion.article
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.45, delay: index * 0.05, ease: [0.22, 1, 0.36, 1] }}
-      className="glow-card flex h-full flex-col gap-4 p-6 rounded-3xl"
-    >
-      <header className="flex items-start justify-between gap-3">
-        <a
-          href={url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="group flex-1 min-w-0"
-        >
-          <h3 className="text-lg font-medium tracking-tight text-white/90 lowercase truncate group-hover:text-gradient">
-            {name.toLowerCase()}
-          </h3>
-        </a>
-        {language ? (
-          <span className="flex items-center gap-1.5 font-mono text-xs text-white/50 shrink-0">
-            <span
-              aria-hidden
-              className="inline-block h-2 w-2 rounded-full"
-              style={{ backgroundColor: langColor, boxShadow: `0 0 6px ${langColor}66` }}
-            />
-            {language}
-          </span>
-        ) : null}
-      </header>
-
-      {description ? (
-        <p className="text-base leading-relaxed text-white/65 line-clamp-3">
-          {description}
-        </p>
-      ) : (
-        <p className="text-sm italic text-white/30">no description</p>
-      )}
-
-      {visibleTopics.length > 0 ? (
-        <ul className="flex flex-wrap gap-1.5">
-          {visibleTopics.map((topic) => (
-            <li key={topic}>
-              <span className="lang-badge">{topic}</span>
-            </li>
-          ))}
-        </ul>
-      ) : null}
-
-      <footer className="mt-auto flex items-center justify-between gap-3 pt-2 text-xs text-white/40 font-mono">
-        <div className="flex items-center gap-3 min-w-0">
-          <span className="flex items-center gap-1">
-            <Star size={12} strokeWidth={1.75} aria-hidden /> {stars}
-          </span>
-          <span className="flex items-center gap-1">
-            <GitFork size={12} strokeWidth={1.75} aria-hidden /> {forks}
-          </span>
-          <span className="truncate">updated {formatRelativeTime(pushedAt)}</span>
-        </div>
-        <div className="flex items-center gap-2 shrink-0">
-          <a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`${name} on GitHub`}
-            className="text-white/40 hover:text-accent transition-colors"
-          >
-            <Github size={14} strokeWidth={1.75} />
-          </a>
-          {homepage ? (
-            <a
-              href={homepage}
+    <Card className="group flex h-full flex-col transition-colors hover:border-primary/40">
+      <CardHeader className="space-y-3">
+        <div className="flex items-start justify-between gap-3">
+          <CardTitle className="text-lg lowercase tracking-tight">
+            <Link
+              href={url}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`${name} live demo`}
-              className="text-white/40 hover:text-accent-2 transition-colors"
+              className="hover:text-primary transition-colors after:absolute after:inset-0 after:content-['']"
             >
-              <ExternalLink size={14} strokeWidth={1.75} />
-            </a>
+              {name.toLowerCase()}
+            </Link>
+          </CardTitle>
+          {language ? (
+            <Badge variant="outline" className="shrink-0 gap-1.5 font-mono text-xs">
+              <span
+                aria-hidden
+                className="inline-block size-2 rounded-full"
+                style={{ backgroundColor: langColor }}
+              />
+              {language}
+            </Badge>
           ) : null}
         </div>
-      </footer>
-    </motion.article>
+        {description ? (
+          <CardDescription className="text-base leading-relaxed line-clamp-3">
+            {description}
+          </CardDescription>
+        ) : (
+          <CardDescription className="italic">no description</CardDescription>
+        )}
+      </CardHeader>
+
+      <CardContent className="flex-1">
+        {visibleTopics.length > 0 ? (
+          <ul className="flex flex-wrap gap-1.5">
+            {visibleTopics.map((topic) => (
+              <li key={topic}>
+                <Badge variant="secondary" className="font-normal">
+                  {topic}
+                </Badge>
+              </li>
+            ))}
+          </ul>
+        ) : null}
+      </CardContent>
+
+      <CardFooter className="flex items-center justify-between gap-3 border-t pt-4 text-sm text-muted-foreground">
+        <div className="flex items-center gap-3 font-mono text-xs">
+          <span className="flex items-center gap-1">
+            <Star className="size-3.5" /> {stars}
+          </span>
+          <span className="flex items-center gap-1">
+            <GitFork className="size-3.5" /> {forks}
+          </span>
+          <span aria-hidden>·</span>
+          <span>{formatRelativeTime(pushedAt)}</span>
+        </div>
+        <div className="relative z-10 flex items-center gap-1">
+          {homepage ? (
+            <Button asChild variant="ghost" size="icon" aria-label={`${name} live demo`}>
+              <a href={homepage} target="_blank" rel="noopener noreferrer">
+                <ExternalLink className="size-4" />
+              </a>
+            </Button>
+          ) : null}
+          <Button asChild variant="ghost" size="icon" aria-label={`${name} on GitHub`}>
+            <a href={url} target="_blank" rel="noopener noreferrer">
+              <Github className="size-4" />
+            </a>
+          </Button>
+        </div>
+      </CardFooter>
+    </Card>
   );
 }

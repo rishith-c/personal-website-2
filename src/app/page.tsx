@@ -1,78 +1,42 @@
 import Link from "next/link";
-import { ArrowRight, Code, Gamepad2, Mail, Palette, Sparkles } from "lucide-react";
+import { ArrowRight, Code2, Cpu, Globe, Mail, Sparkles } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import GitHubStats from "@/components/GitHubStats";
+import ProjectGrid from "@/components/ProjectGrid";
 import {
   fetchAllRepos,
   fetchFeaturedRepos,
   summarizeLanguages,
   type GitHubRepo,
 } from "@/lib/github";
-import AsciiPortrait from "@/components/AsciiPortrait";
-import GitHubStats from "@/components/GitHubStats";
-import GlassCard from "@/components/GlassCard";
-import ParticlesBackground from "@/components/ParticlesBackground";
-import ProjectGrid from "@/components/ProjectGrid";
-import ScrollReveal from "@/components/ScrollReveal";
-import SectionHeading from "@/components/SectionHeading";
-import TypewriterText from "@/components/TypewriterText";
-
-interface ProjectCardProps {
-  name: string;
-  description: string | null;
-  url: string;
-  homepage: string | null;
-  language: string | null;
-  topics: string[];
-  stars: number;
-  forks: number;
-  pushedAt: string;
-  index?: number;
-}
+import type { ProjectCardProps } from "@/components/ProjectCard";
 
 interface SkillCard {
-  icon: React.ReactNode;
   label: string;
   description: string;
+  Icon: typeof Code2;
 }
 
-interface LanguagePill {
-  name: string;
-  level: string;
-  color: string;
-}
-
-const SKILL_CARDS: SkillCard[] = [
-  {
-    icon: <Code className="h-5 w-5" />,
-    label: "ios dev",
-    description: "swift, swiftui, swiftdata. apps that feel native.",
-  },
-  {
-    icon: <Sparkles className="h-5 w-5" />,
-    label: "ai/ml",
-    description: "on-device models, agents, computer vision.",
-  },
-  {
-    icon: <Palette className="h-5 w-5" />,
-    label: "full-stack",
-    description: "next.js, react, typescript, tailwind.",
-  },
-  {
-    icon: <Gamepad2 className="h-5 w-5" />,
-    label: "hardware",
-    description: "drones, robotics, arduino, raspberry pi.",
-  },
+const SKILLS: SkillCard[] = [
+  { label: "ios", description: "swiftui · vision · healthkit · liquid glass", Icon: Code2 },
+  { label: "ai / ml", description: "openai · pytorch · mediapipe · on-device", Icon: Sparkles },
+  { label: "full-stack", description: "next.js · react · supabase · firebase", Icon: Globe },
+  { label: "hardware", description: "arduino · drones · 3d printing", Icon: Cpu },
 ];
 
-const LANGUAGE_PILLS: LanguagePill[] = [
-  { name: "swift", level: "advanced", color: "#F05138" },
-  { name: "swiftui", level: "advanced", color: "#0071E3" },
-  { name: "python", level: "advanced", color: "#3776AB" },
-  { name: "typescript", level: "intermediate", color: "#3178C6" },
-  { name: "c++", level: "intermediate", color: "#00599C" },
-  { name: "java", level: "learning", color: "#ED8B00" },
+const LANGUAGES = [
+  { name: "swift", level: "advanced" },
+  { name: "swiftui", level: "advanced" },
+  { name: "python", level: "advanced" },
+  { name: "typescript", level: "intermediate" },
+  { name: "c++", level: "intermediate" },
+  { name: "java", level: "learning" },
 ];
 
-function toProjectCardProps(repo: GitHubRepo, index?: number): ProjectCardProps {
+function toProjectProps(repo: GitHubRepo): ProjectCardProps {
   return {
     name: repo.name,
     description: repo.description,
@@ -83,185 +47,160 @@ function toProjectCardProps(repo: GitHubRepo, index?: number): ProjectCardProps 
     stars: repo.stars,
     forks: repo.forks,
     pushedAt: repo.pushedAt,
-    index,
   };
 }
 
 export default async function HomePage() {
-  const [allRepos, featuredRepos] = await Promise.all([
-    fetchAllRepos(),
-    fetchFeaturedRepos(),
-  ]);
-
+  const [allRepos, featuredRepos] = await Promise.all([fetchAllRepos(), fetchFeaturedRepos()]);
   const totalStars = allRepos.reduce((sum, repo) => sum + repo.stars, 0);
   const topLanguages = summarizeLanguages(allRepos).slice(0, 6);
-  const featured = featuredRepos.map((repo, index) => toProjectCardProps(repo, index));
+  const featured = featuredRepos.map(toProjectProps);
 
   return (
-    <main id="main-content" className="relative min-h-screen page-fade-in">
+    <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
       {/* hero */}
-      <section className="relative flex min-h-screen items-center px-6 py-24">
-        <ParticlesBackground />
-        <div className="relative z-10 mx-auto grid w-full max-w-6xl items-center gap-12 lg:grid-cols-2">
-          <div className="order-2 lg:order-1">
-            <AsciiPortrait />
-          </div>
-          <div className="order-1 lg:order-2">
-            <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
-              hi, <span className="text-gradient">rishith</span> here.
-            </h1>
-            <div className="mt-6 text-lg text-white/70 sm:text-xl">
-              <TypewriterText
-                text="15-year-old developer & ai builder. 30+ shipped projects across ios, web, ai, and hardware."
-                speed={28}
-              />
-            </div>
-            <div className="mt-10 flex flex-wrap gap-4">
-              <a
-                href="mailto:rishithchennupati@gmail.com"
-                className="glass-button inline-flex items-center gap-2"
-              >
-                <Mail className="h-4 w-4" />
-                <span>say hi</span>
+      <section className="flex min-h-[calc(100vh-4rem)] flex-col justify-center py-20">
+        <div className="max-w-3xl space-y-6">
+          <Badge variant="secondary" className="font-mono">
+            available for new projects
+          </Badge>
+          <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
+            hi, i&apos;m{" "}
+            <span className="text-primary">rishith</span>.
+          </h1>
+          <p className="max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
+            15-year-old developer & ai builder. 30+ shipped projects across ios,
+            web, ai, and hardware. i turn ideas into pixels and code.
+          </p>
+          <div className="flex flex-wrap items-center gap-3 pt-2">
+            <Button asChild size="lg">
+              <a href="mailto:rishithchennupati@gmail.com">
+                <Mail className="size-4" />
+                say hi
               </a>
-              <Link
-                href="/projects"
-                className="glass-button inline-flex items-center gap-2"
-              >
-                <span>see all projects</span>
-                <ArrowRight className="h-4 w-4" />
+            </Button>
+            <Button asChild size="lg" variant="outline">
+              <Link href="/projects">
+                see all projects
+                <ArrowRight className="size-4" />
               </Link>
-            </div>
+            </Button>
           </div>
         </div>
       </section>
 
-      {/* about blurb */}
-      <section className="relative px-6 py-24">
-        <div className="mx-auto max-w-6xl">
-          <SectionHeading subtitle="the short version">
-            <>
-              about <span className="text-gradient">me</span>
-            </>
-          </SectionHeading>
-          <div className="mt-12 grid gap-8 lg:grid-cols-2">
-            <GlassCard>
-              <div className="space-y-4 text-white/75">
-                <p>
-                  i&apos;m rishith — a 15-year-old developer from the bay area.
-                  i&apos;ve been shipping software since middle school: ios apps,
-                  ai/ml projects, web platforms, and hardware builds.
-                </p>
-                <p>
-                  i care about craft. i love when a thing feels good to use, when
-                  the seams disappear, when the code is clean enough that
-                  tomorrow-me can read it.
-                </p>
-                <p>
-                  always shipping. always learning.
-                </p>
-              </div>
-            </GlassCard>
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {SKILL_CARDS.map((skill) => (
-                <GlassCard key={skill.label} hover>
-                  <div className="flex items-start gap-3">
-                    <div className="rounded-lg bg-white/5 p-2 text-white/80">
-                      {skill.icon}
-                    </div>
-                    <div>
-                      <div className="font-medium text-white">{skill.label}</div>
-                      <p className="mt-1 text-base leading-relaxed text-white/65">
-                        {skill.description}
-                      </p>
-                    </div>
-                  </div>
-                </GlassCard>
-              ))}
-            </div>
-          </div>
+      <Separator />
+
+      {/* skills */}
+      <section className="py-20" aria-labelledby="skills-heading">
+        <div className="mb-10 space-y-2">
+          <h2 id="skills-heading" className="text-3xl font-semibold tracking-tight">
+            what i build
+          </h2>
+          <p className="text-base text-muted-foreground">
+            the four areas where i spend most of my time.
+          </p>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {SKILLS.map((skill) => (
+            <Card key={skill.label} className="transition-colors hover:border-primary/40">
+              <CardHeader>
+                <div className="mb-2 flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <skill.Icon className="size-5" aria-hidden />
+                </div>
+                <CardTitle className="text-lg">{skill.label}</CardTitle>
+                <CardDescription className="text-base leading-relaxed">
+                  {skill.description}
+                </CardDescription>
+              </CardHeader>
+            </Card>
+          ))}
         </div>
       </section>
+
+      <Separator />
 
       {/* github stats */}
-      <section className="relative px-6 py-24">
-        <div className="mx-auto max-w-6xl">
-          <ScrollReveal>
-            <GitHubStats
-              totalRepos={allRepos.length}
-              totalStars={totalStars}
-              topLanguages={topLanguages}
-            />
-          </ScrollReveal>
+      <section className="py-20" aria-labelledby="github-heading">
+        <div className="mb-10 space-y-2">
+          <h2 id="github-heading" className="text-3xl font-semibold tracking-tight">
+            on github
+          </h2>
+          <p className="text-base text-muted-foreground">
+            live snapshot from <span className="font-mono text-foreground">@rishith-c</span> · refreshes hourly.
+          </p>
         </div>
+        <GitHubStats
+          totalRepos={allRepos.length}
+          totalStars={totalStars}
+          topLanguages={topLanguages}
+        />
       </section>
 
-      {/* featured projects */}
-      <section className="relative px-6 py-24">
-        <div className="mx-auto max-w-6xl">
-          <SectionHeading subtitle="a curated handful — see all on /projects">
-            <>
-              featured <span className="text-gradient">work</span>
-            </>
-          </SectionHeading>
-          <div className="mt-12">
-            <ProjectGrid projects={featured} />
+      <Separator />
+
+      {/* featured */}
+      <section className="py-20" aria-labelledby="featured-heading">
+        <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+          <div className="space-y-2">
+            <h2 id="featured-heading" className="text-3xl font-semibold tracking-tight">
+              featured work
+            </h2>
+            <p className="text-base text-muted-foreground">
+              a curated handful — the full set lives on /projects.
+            </p>
           </div>
-          <div className="mt-12 flex justify-center">
-            <Link href="/projects" className="glass-button">
-              view all projects →
+          <Button asChild variant="ghost">
+            <Link href="/projects">
+              view all
+              <ArrowRight className="size-4" />
             </Link>
-          </div>
+          </Button>
         </div>
+        <ProjectGrid projects={featured} />
       </section>
+
+      <Separator />
 
       {/* languages */}
-      <section className="relative px-6 py-24">
-        <div className="mx-auto max-w-6xl">
-          <SectionHeading>
-            <>
-              languages i <span className="text-gradient">speak</span>
-            </>
-          </SectionHeading>
-          <div className="mt-12 flex flex-wrap justify-center gap-3">
-            {LANGUAGE_PILLS.map((lang) => (
-              <span
-                key={lang.name}
-                className="lang-badge"
-                style={{
-                  borderColor: `${lang.color}55`,
-                  color: lang.color,
-                  backgroundColor: `${lang.color}12`,
-                }}
-              >
-                {lang.name} · {lang.level}
-              </span>
-            ))}
-          </div>
+      <section className="py-20" aria-labelledby="languages-heading">
+        <div className="mb-10 space-y-2">
+          <h2 id="languages-heading" className="text-3xl font-semibold tracking-tight">
+            languages i speak
+          </h2>
+          <p className="text-base text-muted-foreground">
+            the day-to-day toolkit.
+          </p>
         </div>
+        <ul className="flex flex-wrap gap-2">
+          {LANGUAGES.map((lang) => (
+            <li key={lang.name}>
+              <Badge variant="outline" className="gap-2 px-3 py-1.5 text-sm font-normal">
+                {lang.name}
+                <span className="text-muted-foreground">{lang.level}</span>
+              </Badge>
+            </li>
+          ))}
+        </ul>
       </section>
 
-      {/* contact cta */}
-      <section className="relative px-6 py-24">
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-            let&apos;s <span className="text-gradient">connect</span>
-          </h2>
-          <p className="mt-4 text-white/65">
-            building something cool? want to chat? always open to interesting
-            people and interesting problems.
-          </p>
-          <div className="mt-8 flex justify-center">
-            <a
-              href="mailto:rishithchennupati@gmail.com"
-              className="glass-button inline-flex items-center gap-2"
-            >
-              <Mail className="h-4 w-4" />
-              <span>rishithchennupati@gmail.com</span>
-            </a>
-          </div>
-        </div>
+      <Separator />
+
+      {/* contact */}
+      <section className="py-24 text-center" aria-labelledby="contact-heading">
+        <h2 id="contact-heading" className="text-3xl font-semibold tracking-tight sm:text-4xl">
+          let&apos;s build something.
+        </h2>
+        <p className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-muted-foreground">
+          got an idea, a problem, or just want to say hi? my inbox is always open.
+        </p>
+        <Button asChild size="lg" className="mt-8">
+          <a href="mailto:rishithchennupati@gmail.com">
+            <Mail className="size-4" />
+            email me
+          </a>
+        </Button>
       </section>
-    </main>
+    </div>
   );
 }
