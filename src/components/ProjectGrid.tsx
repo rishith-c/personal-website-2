@@ -82,9 +82,9 @@ export default function ProjectGrid({ projects, showFilters = false }: ProjectGr
       </p>
 
       {visibleProjects.length === 0 ? (
-        <div className="glass rounded-3xl p-10 text-center">
-          <p className="text-white/60">no projects match your filters.</p>
-          <p className="mt-2 text-sm text-white/30">try clearing the search or selecting another language.</p>
+        <div role="status" className="glass rounded-3xl p-10 text-center">
+          <p className="text-base text-white/70">no projects match your filters.</p>
+          <p className="mt-2 text-base text-white/40">try clearing the search or selecting another language.</p>
         </div>
       ) : (
         <motion.div
@@ -122,10 +122,11 @@ function FilterChip({ label, active, onClick }: FilterChipProps) {
     <button
       type="button"
       onClick={onClick}
-      className={`px-3 py-1.5 rounded-full text-xs font-mono transition-all ${
+      aria-pressed={active}
+      className={`min-h-[44px] px-4 py-2 rounded-full text-sm font-mono transition-all ${
         active
-          ? "bg-[#4ade80]/15 text-[#4ade80] ring-1 ring-[#4ade80]/40"
-          : "glass-subtle text-white/50 hover:text-white/80"
+          ? "bg-accent/15 text-accent ring-1 ring-accent/40"
+          : "glass-subtle text-white/55 hover:text-white/85"
       }`}
     >
       {label.toLowerCase()}

@@ -98,7 +98,7 @@ export default async function HomePage() {
   const featured = featuredRepos.map((repo, index) => toProjectCardProps(repo, index));
 
   return (
-    <main className="relative min-h-screen page-fade-in">
+    <main id="main-content" className="relative min-h-screen page-fade-in">
       {/* hero */}
       <section className="relative flex min-h-screen items-center px-6 py-24">
         <ParticlesBackground />
@@ -171,9 +171,9 @@ export default async function HomePage() {
                     </div>
                     <div>
                       <div className="font-medium text-white">{skill.label}</div>
-                      <div className="mt-1 text-sm text-white/60">
+                      <p className="mt-1 text-base leading-relaxed text-white/65">
                         {skill.description}
-                      </div>
+                      </p>
                     </div>
                   </div>
                 </GlassCard>

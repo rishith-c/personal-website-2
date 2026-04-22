@@ -103,7 +103,7 @@ export default function ProjectCard({
       </header>
 
       {description ? (
-        <p className="text-sm leading-relaxed text-white/60 line-clamp-3">
+        <p className="text-base leading-relaxed text-white/65 line-clamp-3">
           {description}
         </p>
       ) : (
@@ -136,7 +136,7 @@ export default function ProjectCard({
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`${name} on GitHub`}
-            className="text-white/40 hover:text-[#4ade80] transition-colors"
+            className="text-white/40 hover:text-accent transition-colors"
           >
             <Github size={14} strokeWidth={1.75} />
           </a>
@@ -146,7 +146,7 @@ export default function ProjectCard({
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`${name} live demo`}
-              className="text-white/40 hover:text-[#22d3ee] transition-colors"
+              className="text-white/40 hover:text-accent-2 transition-colors"
             >
               <ExternalLink size={14} strokeWidth={1.75} />
             </a>

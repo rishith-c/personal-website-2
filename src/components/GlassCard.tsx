@@ -12,7 +12,7 @@ export default function GlassCard({
   hover = true,
 }: GlassCardProps) {
   const hoverClass = hover
-    ? "transition-transform duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-[#4ade80]/5"
+    ? "transition-transform duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-accent/5"
     : "";
   return (
     <div className={`glass rounded-3xl p-6 ${hoverClass} ${className}`.trim()}>

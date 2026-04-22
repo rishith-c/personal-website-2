@@ -57,7 +57,7 @@ export default function CustomCursor() {
           width: ringSize,
           height: ringSize,
         }}
-        className="pointer-events-none fixed left-0 top-0 z-[100] -ml-[28px] -mt-[28px] rounded-full border border-[#4ade80]/40 mix-blend-screen transition-[width,height] duration-200"
+        className="pointer-events-none fixed left-0 top-0 z-[100] -ml-[28px] -mt-[28px] rounded-full border border-accent/40 mix-blend-screen transition-[width,height] duration-200"
       />
       <motion.div
         aria-hidden
@@ -66,9 +66,9 @@ export default function CustomCursor() {
           translateY: dotY,
           width: dotSize,
           height: dotSize,
-          boxShadow: "0 0 14px 4px rgba(74,222,128,0.55)",
+          boxShadow: "0 0 14px 4px color-mix(in oklab, var(--accent) 55%, transparent)",
         }}
-        className="pointer-events-none fixed left-0 top-0 z-[100] -ml-[4px] -mt-[4px] rounded-full bg-[#4ade80]"
+        className="pointer-events-none fixed left-0 top-0 z-[100] -ml-[4px] -mt-[4px] rounded-full bg-accent"
       />
     </>
   );

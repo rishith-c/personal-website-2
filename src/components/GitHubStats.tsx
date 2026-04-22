@@ -59,8 +59,9 @@ function StatCard({ label, value, Icon, accent, inView }: StatCardProps) {
         <Icon size={16} strokeWidth={1.75} style={{ color: accent }} aria-hidden />
       </div>
       <motion.span
+        aria-live="polite"
         className="text-4xl font-light tracking-tight text-white/90"
-        style={{ textShadow: `0 0 24px ${accent}33` }}
+        style={{ textShadow: `0 0 24px color-mix(in oklab, ${accent} 20%, transparent)` }}
       >
         {animated.toLocaleString()}
       </motion.span>
@@ -75,9 +76,9 @@ export default function GitHubStats({ totalRepos, totalStars, topLanguages }: Gi
   return (
     <div ref={ref} className="flex flex-col gap-6">
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <StatCard label="repositories" value={totalRepos} Icon={GitBranch} accent="#4ade80" inView={inView} />
-        <StatCard label="total stars" value={totalStars} Icon={Star} accent="#22d3ee" inView={inView} />
-        <StatCard label="languages" value={topLanguages.length} Icon={Code2} accent="#a855f7" inView={inView} />
+        <StatCard label="repositories" value={totalRepos} Icon={GitBranch} accent="var(--accent)" inView={inView} />
+        <StatCard label="total stars" value={totalStars} Icon={Star} accent="var(--accent-2)" inView={inView} />
+        <StatCard label="languages" value={topLanguages.length} Icon={Code2} accent="var(--accent-3)" inView={inView} />
       </div>
 
       {topLanguages.length > 0 ? (

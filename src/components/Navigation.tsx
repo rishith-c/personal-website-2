@@ -60,7 +60,7 @@ export default function Navigation() {
       >
         <Link
           href="/"
-          className="font-mono text-sm tracking-tight text-white/90 hover:text-[#4ade80] transition-colors"
+          className="font-mono text-sm tracking-tight text-white/90 hover:text-accent transition-colors"
         >
           rishith c.
         </Link>
@@ -72,9 +72,10 @@ export default function Navigation() {
               <li key={link.href}>
                 <Link
                   href={link.href}
+                  aria-current={active ? "page" : undefined}
                   className={`px-3 py-1.5 text-sm rounded-full transition-colors ${
                     active
-                      ? "text-[#4ade80]"
+                      ? "text-accent"
                       : "text-white/60 hover:text-white/90"
                   }`}
                 >
@@ -93,7 +94,7 @@ export default function Navigation() {
               aria-label={label}
               target={external ? "_blank" : undefined}
               rel={external ? "noopener noreferrer" : undefined}
-              className="p-2 rounded-full text-white/60 hover:text-[#4ade80] hover:bg-white/5 transition-colors"
+              className="p-2 rounded-full text-white/60 hover:text-accent hover:bg-white/5 transition-colors"
             >
               <Icon size={16} strokeWidth={1.75} />
             </a>

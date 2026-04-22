@@ -45,6 +45,12 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${jetbrains.variable} antialiased min-h-screen aurora-bg`}
       >
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-background focus:text-foreground focus:ring-2 focus:ring-accent"
+        >
+          Skip to main content
+        </a>
         <CustomCursor />
         <Navigation />
         <div className="page-shell">{children}</div>

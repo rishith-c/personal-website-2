@@ -27,7 +27,7 @@ export default function Footer() {
                 href={href}
                 target={external ? "_blank" : undefined}
                 rel={external ? "noopener noreferrer" : undefined}
-                className="flex items-center gap-1.5 font-mono text-xs text-white/30 hover:text-[#4ade80] transition-colors"
+                className="flex items-center gap-1.5 font-mono text-xs text-white/30 hover:text-accent transition-colors"
               >
                 {Icon ? <Icon size={13} strokeWidth={1.75} aria-hidden /> : null}
                 <span>{label}</span>

@@ -49,19 +49,26 @@ export default async function ProjectsPage() {
   const topLanguages = summarizeLanguages(visibleRepos).slice(0, 6);
 
   return (
-    <main className="relative min-h-screen pt-32 pb-24 px-6 page-fade-in">
+    <main id="main-content" className="relative min-h-screen pt-32 pb-24 px-6 page-fade-in">
       <div className="mx-auto max-w-6xl">
         <header className="space-y-6">
           <div className="flex items-center gap-3">
-            <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-400/10 px-3 py-1 text-xs font-medium text-emerald-300">
-              <span className="relative inline-flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+            <span
+              role="status"
+              aria-live="polite"
+              className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3 py-1 text-xs font-medium text-accent"
+            >
+              <span className="relative inline-flex h-2 w-2" aria-hidden>
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
               </span>
               live from github api
             </span>
           </div>
-          <SectionHeading subtitle="pulled live from github · sorted by most recently updated">
+          <SectionHeading
+            as="h1"
+            subtitle="pulled live from github · sorted by most recently updated"
+          >
             <>
               all <span className="text-gradient">projects</span>
             </>
@@ -79,18 +86,20 @@ export default async function ProjectsPage() {
         <div className="mt-16">
           {allProjects.length === 0 ? (
             <GlassCard>
-              <div className="space-y-3 text-center">
-                <h3 className="text-xl font-semibold text-white">
+              <div role="alert" className="space-y-3 text-center">
+                <h2 className="text-xl font-semibold text-white">
                   couldn&apos;t reach github right now
-                </h3>
-                <p className="text-white/65">
+                </h2>
+                <p className="text-base leading-relaxed text-white/65">
                   the live feed didn&apos;t come back. you can still browse
                   everything directly on github.
                 </p>
                 <div className="pt-2">
                   <Link
                     href="https://github.com/rishith-c"
-                    className="glass-button inline-flex items-center gap-2"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="glass-button inline-flex min-h-[44px] items-center gap-2 px-5"
                   >
                     visit github.com/rishith-c →
                   </Link>

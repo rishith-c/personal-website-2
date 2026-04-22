@@ -155,11 +155,11 @@ export default async function AboutPage() {
   const recentProjects = allRepos.slice(0, 4).map(toProjectCardProps);
 
   return (
-    <main className="relative min-h-screen pt-32 pb-24 px-6 page-fade-in">
+    <main id="main-content" className="relative min-h-screen pt-32 pb-24 px-6 page-fade-in">
       <div className="mx-auto max-w-5xl space-y-24">
         {/* heading */}
         <section>
-          <SectionHeading>
+          <SectionHeading as="h1">
             <>
               about <span className="text-gradient">rishith</span>
             </>
@@ -171,7 +171,7 @@ export default async function AboutPage() {
           <div className="relative mx-auto lg:mx-0">
             <div
               aria-hidden
-              className="absolute inset-0 -z-10 rounded-full bg-gradient-to-br from-fuchsia-500/30 via-indigo-500/20 to-cyan-500/30 blur-2xl"
+              className="absolute inset-0 -z-10 rounded-full bg-gradient-to-br from-accent-3/30 via-accent/20 to-accent-2/30 blur-2xl"
             />
             <Image
               src={avatarUrl}
@@ -237,9 +237,9 @@ export default async function AboutPage() {
                   </div>
                   <div>
                     <div className="font-medium text-white">{area.label}</div>
-                    <div className="mt-1 text-sm text-white/60">
+                    <p className="mt-1 text-base leading-relaxed text-white/65">
                       {area.description}
-                    </div>
+                    </p>
                   </div>
                 </div>
               </GlassCard>
