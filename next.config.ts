@@ -8,6 +8,12 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "opengraph.githubassets.com" },
     ],
   },
+  async redirects() {
+    return [
+      { source: "/projects", destination: "/#index", permanent: true },
+      { source: "/about", destination: "/#now", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;

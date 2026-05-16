@@ -1,8 +1,9 @@
 /**
  * GitHub API client (server-side).
  *
- * Pulls repos for the configured user with Next.js revalidation so we don't
- * hammer the API. Falls back gracefully if the request fails.
+ * Pulls every public, owned, non-fork repo from the configured user.
+ * Featured / highlighted repos are derived from signal (recency, stars,
+ * description, topics) — nothing hardcoded.
  */
 
 const GITHUB_USER = "rishith-c";
@@ -110,11 +111,9 @@ function mapRepo(raw: RawRepo): GitHubRepo {
 
 export async function fetchAllRepos(user: string = GITHUB_USER): Promise<GitHubRepo[]> {
   const repos: GitHubRepo[] = [];
-  let page = 1;
   const perPage = 100;
 
-  // Most users have well under a few hundred public repos; cap at 5 pages.
-  for (; page <= 5; page++) {
+  for (let page = 1; page <= 5; page++) {
     const url = `https://api.github.com/users/${encodeURIComponent(user)}/repos?per_page=${perPage}&page=${page}&sort=pushed&direction=desc&type=owner`;
 
     let response: Response;
@@ -133,15 +132,14 @@ export async function fetchAllRepos(user: string = GITHUB_USER): Promise<GitHubR
     if (!Array.isArray(raw) || raw.length === 0) break;
 
     for (const item of raw) {
-      // Skip forks — surface only original work.
       if (item.fork) continue;
+      if (item.archived) continue;
       repos.push(mapRepo(item));
     }
 
     if (raw.length < perPage) break;
   }
 
-  // Most-recently-pushed first.
   return repos.sort(
     (a, b) => new Date(b.pushedAt).getTime() - new Date(a.pushedAt).getTime(),
   );
@@ -174,33 +172,38 @@ export async function fetchProfile(user: string = GITHUB_USER): Promise<GitHubPr
 }
 
 /**
- * Featured set used on the home page. Curated by repo name (case-insensitive)
- * — ordering matches the order given here. Anything missing from the live
- * GitHub feed is silently dropped.
+ * Score a repo by signal. Higher = more worth surfacing.
+ *
+ * Why: the old site hardcoded a curated list, so featured work went stale
+ * the moment a new repo shipped. This derives "interesting" from data the
+ * user already maintains on GitHub (push activity, stars, descriptions,
+ * topics), so the homepage stays current without manual upkeep.
  */
-const FEATURED_REPO_NAMES: string[] = [
-  "fire-spread-ai",
-  "decide-multiverse",
-  "sentry",
-  "CoachBuddy",
-  "Countr",
-  "Autonomous-Drone",
-  "AutoDoor",
-  "Body-Tracking-Solution",
-  "Fluentry",
-];
+export function scoreRepo(repo: GitHubRepo, now: number = Date.now()): number {
+  let score = 0;
 
-export async function fetchFeaturedRepos(): Promise<GitHubRepo[]> {
-  const all = await fetchAllRepos();
-  const lookup = new Map<string, GitHubRepo>(
-    all.map((repo) => [repo.name.toLowerCase(), repo]),
-  );
-  const featured: GitHubRepo[] = [];
-  for (const name of FEATURED_REPO_NAMES) {
-    const match = lookup.get(name.toLowerCase());
-    if (match) featured.push(match);
-  }
-  return featured;
+  // Stars are the strongest signal of public interest.
+  score += repo.stars * 8;
+
+  // Recency: full credit if pushed in last 30 days, decays to ~0 after a year.
+  const ageDays = Math.max(1, (now - new Date(repo.pushedAt).getTime()) / 86400000);
+  score += 30 / Math.pow(ageDays / 30 + 1, 1.2) * 10;
+
+  // Having a description means the author cared enough to explain it.
+  if (repo.description && repo.description.trim().length > 8) score += 6;
+
+  // Topics signal intentional categorization.
+  score += Math.min(repo.topics.length, 4) * 1.5;
+
+  // Penalize empty repos.
+  if (!repo.description && repo.stars === 0) score -= 4;
+
+  return score;
+}
+
+export function rankRepos(repos: GitHubRepo[]): GitHubRepo[] {
+  const now = Date.now();
+  return [...repos].sort((a, b) => scoreRepo(b, now) - scoreRepo(a, now));
 }
 
 export interface LanguageBreakdown {

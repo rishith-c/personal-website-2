@@ -1,30 +1,54 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import "./globals.css";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
-import { TooltipProvider } from "@/components/ui/tooltip";
 
-const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
-const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" });
+const geist = Geist({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+});
+
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
+});
+
+const instrumentSerif = Instrument_Serif({
+  subsets: ["latin"],
+  weight: "400",
+  style: ["normal", "italic"],
+  variable: "--font-serif",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
-  title: "rishith chennupati",
+  metadataBase: new URL("https://rishithc.com"),
+  title: "rishith chennupati — index",
   description:
-    "rishith chennupati — 15-year-old developer & ai builder. ios, ai, full-stack, hardware. 30+ shipped projects.",
-  keywords: ["rishith", "chennupati", "portfolio", "ios developer", "ai", "swiftui", "next.js"],
+    "Rishith Chennupati. Fifteen years old, San Francisco Bay Area. Building ios apps, ai systems, web platforms, and hardware. An index of everything.",
+  keywords: [
+    "rishith chennupati",
+    "rishith",
+    "portfolio",
+    "ios developer",
+    "swift",
+    "ai engineer",
+    "san francisco bay area",
+  ],
   authors: [{ name: "Rishith Chennupati" }],
   openGraph: {
-    title: "rishith chennupati",
-    description: "developer & ai builder — portfolio",
+    title: "rishith chennupati — index",
+    description:
+      "Fifteen years old, San Francisco Bay Area. Building ios apps, ai systems, web platforms, and hardware. An index of everything.",
     url: "https://rishithc.com",
     siteName: "rishith chennupati",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "rishith chennupati",
-    description: "developer & ai builder — portfolio",
+    title: "rishith chennupati — index",
+    description: "Fifteen. SF Bay Area. iOS, AI, web, hardware. An index.",
   },
 };
 
@@ -32,23 +56,18 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`dark ${geist.variable} ${geistMono.variable}`}>
-      <body className="min-h-screen bg-background text-foreground antialiased">
+    <html
+      lang="en"
+      className={`${geist.variable} ${geistMono.variable} ${instrumentSerif.variable}`}
+    >
+      <body className="min-h-dvh">
         <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+          href="#index"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-sm focus:bg-[var(--color-ink)] focus:px-3 focus:py-2 focus:text-[var(--color-bg)]"
         >
-          Skip to main content
+          Skip to index
         </a>
-        <TooltipProvider>
-          <div className="relative flex min-h-screen flex-col">
-            <Navigation />
-            <main id="main-content" className="flex-1">
-              {children}
-            </main>
-            <Footer />
-          </div>
-        </TooltipProvider>
+        {children}
       </body>
     </html>
   );

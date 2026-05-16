@@ -1,94 +1,143 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+@theme {
+  --color-bg: oklch(0.985 0.003 90);
+  --color-bg-elevated: oklch(1 0 0);
+  --color-ink: oklch(0.16 0.008 50);
+  --color-ink-soft: oklch(0.36 0.008 50);
+  --color-ink-mute: oklch(0.55 0.008 50);
+  --color-rule: oklch(0.86 0.008 50);
+  --color-rule-soft: oklch(0.92 0.005 50);
+  --color-accent: oklch(0.58 0.21 28);
+  --color-accent-ink: oklch(0.99 0 0);
+
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, monospace;
+  --font-serif: var(--font-serif), "Iowan Old Style", "Apple Garamond", Georgia, serif;
+
+  --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.78 0.18 145);
-  --primary-foreground: oklch(0.145 0.02 145);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.45 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.78 0.18 145);
-  --radius: 0.75rem;
+  color-scheme: light;
+  --grid-line: oklch(0.92 0.005 50 / 0.7);
 }
 
-.dark {
-  --background: oklch(0.14 0.01 250);
-  --foreground: oklch(0.97 0 0);
-  --card: oklch(0.18 0.01 250);
-  --card-foreground: oklch(0.97 0 0);
-  --popover: oklch(0.16 0.01 250);
-  --popover-foreground: oklch(0.97 0 0);
-  --primary: oklch(0.82 0.19 145);
-  --primary-foreground: oklch(0.16 0.02 145);
-  --secondary: oklch(0.24 0.01 250);
-  --secondary-foreground: oklch(0.97 0 0);
-  --muted: oklch(0.22 0.01 250);
-  --muted-foreground: oklch(0.65 0.02 250);
-  --accent: oklch(0.26 0.01 250);
-  --accent-foreground: oklch(0.97 0 0);
-  --destructive: oklch(0.62 0.24 25);
-  --destructive-foreground: oklch(0.97 0 0);
-  --border: oklch(0.27 0.01 250 / 0.6);
-  --input: oklch(0.27 0.01 250 / 0.6);
-  --ring: oklch(0.82 0.19 145);
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-destructive: var(--destructive);
-  --color-destructive-foreground: var(--destructive-foreground);
-  --color-border: var(--border);
-  --color-input: var(--input);
-  --color-ring: var(--ring);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-mono);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-}
-
-* {
-  border-color: var(--border);
-}
-
-html {
-  scroll-behavior: smooth;
+html, body {
+  background: var(--color-bg);
+  color: var(--color-ink);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), system-ui, sans-serif;
-  font-feature-settings: "rlig" 1, "calt" 1;
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01" on, "cv11" on, "cv01" on, "calt" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button, a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* A single, sober focus style. */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Subtle paper grid behind the page — only renders if a parent uses it. */
+.paper-grid {
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 96px 96px;
+  background-position: -1px -1px;
+}
+
+/* Press feedback — apply via class on interactive elements. */
+.press {
+  transition: transform 160ms var(--ease-out-strong);
+}
+.press:active {
+  transform: scale(0.97);
+}
+
+/* Row reveal used by the index. Staggered via inline --i. */
+.reveal-row {
+  opacity: 0;
+  transform: translateY(8px);
+  animation: revealRow 520ms var(--ease-out-strong) forwards;
+  animation-delay: calc(var(--i, 0) * 32ms + 80ms);
+}
+@keyframes revealRow {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Big editorial text — reveal one block at a time. */
+.reveal-block {
+  opacity: 0;
+  transform: translateY(12px);
+  animation: revealRow 720ms var(--ease-out-strong) forwards;
+  animation-delay: calc(var(--i, 0) * 80ms + 60ms);
+}
+
+/* Live "now" indicator dot. */
+.pulse-dot {
+  position: relative;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: var(--color-accent);
+}
+.pulse-dot::after {
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 9999px;
+  background: var(--color-accent);
+  opacity: 0.4;
+  animation: pulseRing 1.8s var(--ease-out-strong) infinite;
+}
+@keyframes pulseRing {
+  0% { transform: scale(0.6); opacity: 0.5; }
+  80% { transform: scale(1.8); opacity: 0; }
+  100% { transform: scale(1.8); opacity: 0; }
+}
+
+/* Horizontal marquee for languages — paused on hover. */
+.marquee {
+  display: flex;
+  width: max-content;
+  animation: marqueeScroll 60s linear infinite;
+}
+.marquee-host:hover .marquee { animation-play-state: paused; }
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* Inverted hero number (used in stat block) wants tabular figures. */
+.tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
