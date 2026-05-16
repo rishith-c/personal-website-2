@@ -63,7 +63,7 @@ export default function NowBlock({ topLanguages }: NowBlockProps) {
           <ul className="grid gap-3 border-t border-[color:var(--color-rule)] pt-7 font-mono text-[13px] text-[color:var(--color-ink-soft)] sm:grid-cols-2">
             <li className="flex items-baseline gap-3">
               <span className="text-[color:var(--color-ink-mute)]">→ today</span>
-              <span>building synapse · sf bay area</span>
+              <span>building synapse · san jose, ca</span>
             </li>
             <li className="flex items-baseline gap-3">
               <span className="text-[color:var(--color-ink-mute)]">→ reading</span>
@@ -71,7 +71,7 @@ export default function NowBlock({ topLanguages }: NowBlockProps) {
             </li>
             <li className="flex items-baseline gap-3">
               <span className="text-[color:var(--color-ink-mute)]">→ school</span>
-              <span>tenth grade · 4.0 most days</span>
+              <span>ninth grade · 4.0 most days</span>
             </li>
             <li className="flex items-baseline gap-3">
               <span className="text-[color:var(--color-ink-mute)]">→ open to</span>

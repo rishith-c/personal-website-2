@@ -39,7 +39,7 @@ export default function Hero({
         <span className="mx-2 text-[color:var(--color-rule)]" aria-hidden>·</span>
         Volume 01
         <span className="mx-2 text-[color:var(--color-rule)]" aria-hidden>·</span>
-        SF Bay Area
+        San Jose, CA
       </p>
 
       {/* statement */}

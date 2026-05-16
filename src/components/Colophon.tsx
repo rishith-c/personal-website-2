@@ -78,9 +78,9 @@ export default function Colophon() {
           <div>
             <p className="uppercase tracking-[0.16em]">Location</p>
             <p className="mt-3 text-[color:var(--color-ink-soft)]">
-              San Francisco Bay Area
+              San Jose, CA
               <br />
-              37.55°N, 122.31°W
+              37.34°N, 121.89°W
             </p>
           </div>
         </div>

@@ -134,6 +134,9 @@ export async function fetchAllRepos(user: string = GITHUB_USER): Promise<GitHubR
     for (const item of raw) {
       if (item.fork) continue;
       if (item.archived) continue;
+      // Hide empty / WIP repos. No description = wasn't worth publishing.
+      const desc = item.description?.trim() ?? "";
+      if (desc.length < 8) continue;
       repos.push(mapRepo(item));
     }
 

@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://rishithc.com"),
   title: "rishith chennupati — index",
   description:
-    "Rishith Chennupati. Fifteen years old, San Francisco Bay Area. Building ios apps, ai systems, web platforms, and hardware. An index of everything.",
+    "Rishith Chennupati. Fifteen years old, San Jose, CA. Building ios apps, ai systems, web platforms, and hardware. An index of everything.",
   keywords: [
     "rishith chennupati",
     "rishith",
@@ -34,13 +34,13 @@ export const metadata: Metadata = {
     "ios developer",
     "swift",
     "ai engineer",
-    "san francisco bay area",
+    "san jose",
   ],
   authors: [{ name: "Rishith Chennupati" }],
   openGraph: {
     title: "rishith chennupati — index",
     description:
-      "Fifteen years old, San Francisco Bay Area. Building ios apps, ai systems, web platforms, and hardware. An index of everything.",
+      "Fifteen years old, San Jose, CA. Building ios apps, ai systems, web platforms, and hardware. An index of everything.",
     url: "https://rishithc.com",
     siteName: "rishith chennupati",
     type: "website",
@@ -48,7 +48,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "rishith chennupati — index",
-    description: "Fifteen. SF Bay Area. iOS, AI, web, hardware. An index.",
+    description: "Fifteen. San Jose. iOS, AI, web, hardware. An index.",
   },
 };
 
