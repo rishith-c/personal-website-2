@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useMemo, useState } from "react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
 import type { GitHubRepo } from "@/lib/github";
 import { colorForLanguage } from "@/lib/language-color";
 import { formatRelativeTime } from "@/lib/time";
@@ -216,11 +216,43 @@ function Row({ repo, index, isHovered, isHighlight, onEnter, onLeave }: RowProps
   const langColor = colorForLanguage(repo.language);
   const indexLabel = index.toString().padStart(3, "0");
   const visibleTopics = repo.topics.slice(0, 4);
-  // Cap stagger so the 30th row doesn't wait a full second.
-  const staggerIndex = Math.min(index - 1, 14);
+  const liRef = useRef<HTMLLIElement | null>(null);
+
+  // Scroll-into-view reveal — fires per row once it crosses 12% from the
+  // bottom. Cheaper than a global scroll listener; the stagger comes from
+  // the `--i` index on the row inside the same on-screen burst.
+  useEffect(() => {
+    const node = liRef.current;
+    if (!node) return;
+    if (node.dataset.revealed === "true") return;
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      node.dataset.revealed = "true";
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            (entry.target as HTMLElement).dataset.revealed = "true";
+            io.unobserve(entry.target);
+          }
+        }
+      },
+      { rootMargin: "-12% 0px -8% 0px" },
+    );
+    io.observe(node);
+    return () => io.disconnect();
+  }, []);
+
+  // Cap stagger so a 50-item index doesn't wait two seconds end-to-end.
+  const staggerIndex = Math.min(index - 1, 12);
 
   return (
     <li
+      ref={liRef}
       className="reveal-row group relative"
       style={{ ["--i" as never]: staggerIndex }}
       onMouseEnter={onEnter}

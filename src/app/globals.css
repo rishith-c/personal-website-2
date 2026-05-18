@@ -76,18 +76,19 @@ button, a {
   transform: scale(0.97);
 }
 
-/* Row reveal used by the index. Staggered via inline --i. */
+/* Row reveal used by the index. Triggered by IntersectionObserver
+   (the WorkIndex client component sets data-revealed="true"). */
 .reveal-row {
   opacity: 0;
-  transform: translateY(8px);
-  animation: revealRow 520ms var(--ease-out-strong) forwards;
-  animation-delay: calc(var(--i, 0) * 32ms + 80ms);
+  transform: translateY(10px);
+  transition:
+    opacity 620ms var(--ease-out-strong),
+    transform 620ms var(--ease-out-strong);
+  transition-delay: calc(var(--i, 0) * 28ms);
 }
-@keyframes revealRow {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.reveal-row[data-revealed="true"] {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Big editorial text — reveal one block at a time. */
@@ -126,12 +127,55 @@ button, a {
 .marquee {
   display: flex;
   width: max-content;
-  animation: marqueeScroll 60s linear infinite;
+  animation: marqueeScroll 55s linear infinite;
+  will-change: transform;
 }
 .marquee-host:hover .marquee { animation-play-state: paused; }
 @keyframes marqueeScroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+/* Scroll-scrubbed word reveals. Native CSS view timelines (Chrome 115+).
+   In browsers without view timelines, the words start visible — which is
+   fine; the content is still readable. */
+.reveal-paragraph .reveal-word {
+  opacity: 0.18;
+  transition: opacity 200ms var(--ease-out-strong);
+  will-change: opacity;
+}
+@supports (animation-timeline: view()) {
+  .reveal-paragraph {
+    view-timeline-name: --reveal;
+    view-timeline-axis: block;
+  }
+  .reveal-paragraph .reveal-word {
+    opacity: 0.18;
+    animation: revealWord linear forwards;
+    animation-timeline: --reveal;
+    animation-range: cover 20% cover 65%;
+  }
+  @keyframes revealWord {
+    to { opacity: 1; }
+  }
+}
+/* IntersectionObserver fallback: once the paragraph enters, all words fade in. */
+.reveal-paragraph[data-revealed="true"] .reveal-word {
+  opacity: 1;
+}
+
+/* Section header pin used in NowBlock. */
+.sticky-pin {
+  position: sticky;
+  top: 5rem;
+}
+
+/* Hide native scrollbar on Lenis-controlled pages — keeps the rail clean. */
+html.lenis-smooth {
+  scrollbar-color: var(--color-rule) transparent;
+}
+html.lenis-smooth::-webkit-scrollbar {
+  width: 0;
 }
 
 /* Inverted hero number (used in stat block) wants tabular figures. */

@@ -1,3 +1,5 @@
+import MagneticLink from "@/components/MagneticLink";
+
 /**
  * Contact + footer rolled into one. The footer is a single long sentence,
  * editorial style — no link soup, no big "Get in touch!" button stack.
@@ -9,18 +11,21 @@ export default function Colophon() {
         <h2 className="font-[family-name:var(--font-serif)] text-[clamp(3.2rem,7.5vw,7.2rem)] leading-[0.95] tracking-[-0.02em] text-[color:var(--color-ink)]">
           Send a note.
           <br />
-          <a
+          <MagneticLink
             href="mailto:rishithchennupati@gmail.com"
-            className="group inline-flex items-baseline gap-3 italic text-[color:var(--color-ink-soft)] transition-colors duration-200 hover:text-[color:var(--color-accent)]"
+            ariaLabel="Email Rishith"
+            className="group items-baseline gap-3 italic text-[color:var(--color-ink-soft)] transition-colors duration-200 hover:text-[color:var(--color-accent)]"
           >
-            rishithchennupati
-            <span aria-hidden className="text-[color:var(--color-ink-mute)] transition-colors group-hover:text-[color:var(--color-accent)]">@</span>
-            gmail
-            <span aria-hidden className="text-[color:var(--color-ink-mute)] transition-colors group-hover:text-[color:var(--color-accent)]">.com</span>
-            <span aria-hidden className="ml-1 inline-block translate-y-[-0.1em] text-[0.5em] text-[color:var(--color-ink-mute)] transition-all duration-300 group-hover:translate-x-2 group-hover:text-[color:var(--color-accent)]">
-              ↗
+            <span className="inline-flex items-baseline gap-3">
+              rishithchennupati
+              <span aria-hidden className="text-[color:var(--color-ink-mute)] transition-colors group-hover:text-[color:var(--color-accent)]">@</span>
+              gmail
+              <span aria-hidden className="text-[color:var(--color-ink-mute)] transition-colors group-hover:text-[color:var(--color-accent)]">.com</span>
+              <span aria-hidden className="ml-1 inline-block translate-y-[-0.1em] text-[0.5em] text-[color:var(--color-ink-mute)] transition-all duration-300 group-hover:translate-x-2 group-hover:text-[color:var(--color-accent)]">
+                ↗
+              </span>
             </span>
-          </a>
+          </MagneticLink>
         </h2>
 
         <p className="mt-10 max-w-[44ch] text-[15px] leading-[1.6] text-[color:var(--color-ink-soft)] sm:text-[16px]">

@@ -1,5 +1,6 @@
 import { formatRelativeTime } from "@/lib/time";
 import type { GitHubRepo, LanguageBreakdown } from "@/lib/github";
+import CountUp from "@/components/CountUp";
 
 interface HeroProps {
   current: GitHubRepo | null;
@@ -83,8 +84,8 @@ export default function Hero({
             <dt className="text-[11px] uppercase tracking-[0.16em] text-[color:var(--color-ink-mute)]">
               Repos
             </dt>
-            <dd className="tabular mt-1 text-[20px] text-[color:var(--color-ink)]">
-              {totalRepos.toString().padStart(2, "0")}
+            <dd className="mt-1 text-[20px] text-[color:var(--color-ink)]">
+              <CountUp to={totalRepos} />
             </dd>
           </div>
 
@@ -92,8 +93,8 @@ export default function Hero({
             <dt className="text-[11px] uppercase tracking-[0.16em] text-[color:var(--color-ink-mute)]">
               Stars
             </dt>
-            <dd className="tabular mt-1 text-[20px] text-[color:var(--color-ink)]">
-              {totalStars.toString().padStart(2, "0")}
+            <dd className="mt-1 text-[20px] text-[color:var(--color-ink)]">
+              <CountUp to={totalStars} />
             </dd>
           </div>
 
@@ -101,8 +102,8 @@ export default function Hero({
             <dt className="text-[11px] uppercase tracking-[0.16em] text-[color:var(--color-ink-mute)]">
               Languages
             </dt>
-            <dd className="tabular mt-1 text-[20px] text-[color:var(--color-ink)]">
-              {topLanguages.length.toString().padStart(2, "0")}
+            <dd className="mt-1 text-[20px] text-[color:var(--color-ink)]">
+              <CountUp to={topLanguages.length} />
             </dd>
           </div>
 
@@ -110,8 +111,8 @@ export default function Hero({
             <dt className="text-[11px] uppercase tracking-[0.16em] text-[color:var(--color-ink-mute)]">
               Shipped &lsquo;26
             </dt>
-            <dd className="tabular mt-1 text-[20px] text-[color:var(--color-ink)]">
-              {shippedThisYear.toString().padStart(2, "0")}
+            <dd className="mt-1 text-[20px] text-[color:var(--color-ink)]">
+              <CountUp to={shippedThisYear} />
             </dd>
           </div>
         </dl>
