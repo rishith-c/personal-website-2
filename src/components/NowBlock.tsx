@@ -21,16 +21,26 @@ export default function NowBlock({ topLanguages }: NowBlockProps) {
     >
       <div className="grid gap-12 sm:grid-cols-[1fr_2fr] sm:gap-20">
         <div className="sticky-pin self-start">
-          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink-mute)]">
+          <p className="reveal-on-view font-mono text-[11px] uppercase tracking-[0.18em] text-[color:var(--color-ink-mute)]">
             § Now
           </p>
           <h2
             id="now-heading"
-            className="mt-3 font-[family-name:var(--font-serif)] text-[clamp(2.4rem,4.2vw,4rem)] leading-[1] tracking-[-0.02em] text-[color:var(--color-ink)]"
+            className="reveal-lines mt-3 font-[family-name:var(--font-serif)] text-[clamp(2.4rem,4.2vw,4rem)] leading-[1] tracking-[-0.02em] text-[color:var(--color-ink)]"
           >
-            What I&rsquo;m
-            <br />
-            <span className="italic text-[color:var(--color-ink-soft)]">spending time on.</span>
+            <span className="rise-mask">
+              <span className="reveal-line-inner" style={{ ["--i" as never]: 0 }}>
+                What I&rsquo;m
+              </span>
+            </span>
+            <span className="rise-mask">
+              <span
+                className="reveal-line-inner italic text-[color:var(--color-ink-soft)]"
+                style={{ ["--i" as never]: 1 }}
+              >
+                spending time on.
+              </span>
+            </span>
           </h2>
         </div>
 
@@ -49,7 +59,7 @@ export default function NowBlock({ topLanguages }: NowBlockProps) {
             text={`Day to day I work in ${langLine}. iOS is home. Python is the lab. Next.js is how the labs get on the internet. I run a Raspberry Pi for drone work and a 3D printer for the parts in between.`}
           />
 
-          <ul className="grid gap-3 border-t border-[color:var(--color-rule)] pt-7 font-mono text-[13px] text-[color:var(--color-ink-soft)] sm:grid-cols-2">
+          <ul className="reveal-stagger grid gap-3 border-t border-[color:var(--color-rule)] pt-7 font-mono text-[13px] text-[color:var(--color-ink-soft)] sm:grid-cols-2">
             <li className="flex items-baseline gap-3">
               <span className="text-[color:var(--color-ink-mute)]">→ today</span>
               <span>building synapse · san jose, ca</span>

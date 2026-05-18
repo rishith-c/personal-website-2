@@ -11,7 +11,7 @@ interface TopBarProps {
 export default function TopBar({ totalRepos }: TopBarProps) {
   return (
     <header
-      className="sticky top-0 z-40 w-full border-b border-[color:var(--color-rule-soft)] bg-[color:var(--color-bg)]/85 backdrop-blur supports-[backdrop-filter]:bg-[color:var(--color-bg)]/70"
+      className="topbar-enter sticky top-0 z-40 w-full border-b border-[color:var(--color-rule-soft)] bg-[color:var(--color-bg)]/85 backdrop-blur supports-[backdrop-filter]:bg-[color:var(--color-bg)]/70"
     >
       <div className="mx-auto flex h-12 w-full max-w-[1180px] items-center justify-between gap-6 px-5 sm:px-8">
         <Link

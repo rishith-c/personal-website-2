@@ -8,33 +8,40 @@ export default function Colophon() {
   return (
     <footer id="contact" className="border-t border-[color:var(--color-rule)] bg-[color:var(--color-bg)]">
       <div className="mx-auto w-full max-w-[1180px] px-5 py-24 sm:px-8 sm:py-32">
-        <h2 className="font-[family-name:var(--font-serif)] text-[clamp(3.2rem,7.5vw,7.2rem)] leading-[0.95] tracking-[-0.02em] text-[color:var(--color-ink)]">
-          Send a note.
-          <br />
-          <MagneticLink
-            href="mailto:rishithchennupati@gmail.com"
-            ariaLabel="Email Rishith"
-            className="group items-baseline gap-3 italic text-[color:var(--color-ink-soft)] transition-colors duration-200 hover:text-[color:var(--color-accent)]"
-          >
-            <span className="inline-flex items-baseline gap-3">
-              rishithchennupati
-              <span aria-hidden className="text-[color:var(--color-ink-mute)] transition-colors group-hover:text-[color:var(--color-accent)]">@</span>
-              gmail
-              <span aria-hidden className="text-[color:var(--color-ink-mute)] transition-colors group-hover:text-[color:var(--color-accent)]">.com</span>
-              <span aria-hidden className="ml-1 inline-block translate-y-[-0.1em] text-[0.5em] text-[color:var(--color-ink-mute)] transition-all duration-300 group-hover:translate-x-2 group-hover:text-[color:var(--color-accent)]">
-                ↗
-              </span>
+        <h2 className="reveal-lines font-[family-name:var(--font-serif)] text-[clamp(3.2rem,7.5vw,7.2rem)] leading-[0.95] tracking-[-0.02em] text-[color:var(--color-ink)]">
+          <span className="rise-mask">
+            <span className="reveal-line-inner" style={{ ["--i" as never]: 0 }}>
+              Send a note.
             </span>
-          </MagneticLink>
+          </span>
+          <span className="rise-mask">
+            <span className="reveal-line-inner" style={{ ["--i" as never]: 1 }}>
+              <MagneticLink
+                href="mailto:rishithchennupati@gmail.com"
+                ariaLabel="Email Rishith"
+                className="group items-baseline gap-3 italic text-[color:var(--color-ink-soft)] transition-colors duration-200 hover:text-[color:var(--color-accent)]"
+              >
+                <span className="inline-flex items-baseline gap-3">
+                  rishithchennupati
+                  <span aria-hidden className="text-[color:var(--color-ink-mute)] transition-colors group-hover:text-[color:var(--color-accent)]">@</span>
+                  gmail
+                  <span aria-hidden className="text-[color:var(--color-ink-mute)] transition-colors group-hover:text-[color:var(--color-accent)]">.com</span>
+                  <span aria-hidden className="ml-1 inline-block translate-y-[-0.1em] text-[0.5em] text-[color:var(--color-ink-mute)] transition-all duration-300 group-hover:translate-x-2 group-hover:text-[color:var(--color-accent)]">
+                    ↗
+                  </span>
+                </span>
+              </MagneticLink>
+            </span>
+          </span>
         </h2>
 
-        <p className="mt-10 max-w-[44ch] text-[15px] leading-[1.6] text-[color:var(--color-ink-soft)] sm:text-[16px]">
+        <p className="reveal-on-view mt-10 max-w-[44ch] text-[15px] leading-[1.6] text-[color:var(--color-ink-soft)] sm:text-[16px]">
           Best place to find me is email. If you&rsquo;re building something
           interesting in iOS, AI, or hardware — especially the messy
           intersection — I want to hear about it.
         </p>
 
-        <div className="mt-20 grid gap-6 border-t border-[color:var(--color-rule-soft)] pt-8 font-mono text-[12px] text-[color:var(--color-ink-mute)] sm:grid-cols-3">
+        <div className="reveal-stagger mt-20 grid gap-6 border-t border-[color:var(--color-rule-soft)] pt-8 font-mono text-[12px] text-[color:var(--color-ink-mute)] sm:grid-cols-3">
           <div>
             <p className="uppercase tracking-[0.16em]">Elsewhere</p>
             <ul className="mt-3 space-y-1.5 text-[color:var(--color-ink-soft)]">

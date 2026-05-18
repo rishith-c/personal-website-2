@@ -25,10 +25,7 @@
   --grid-line: oklch(0.92 0.005 50 / 0.7);
 }
 
-html, body {
-  background: var(--color-bg);
-  color: var(--color-ink);
-}
+html, body { background: var(--color-bg); color: var(--color-ink); }
 
 body {
   font-family: var(--font-sans);
@@ -38,28 +35,17 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-::selection {
-  background: var(--color-accent);
-  color: var(--color-accent-ink);
-}
+::selection { background: var(--color-accent); color: var(--color-accent-ink); }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
+a { color: inherit; text-decoration: none; }
+button, a { -webkit-tap-highlight-color: transparent; }
 
-button, a {
-  -webkit-tap-highlight-color: transparent;
-}
-
-/* A single, sober focus style. */
 :focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 3px;
   border-radius: 2px;
 }
 
-/* Subtle paper grid behind the page — only renders if a parent uses it. */
 .paper-grid {
   background-image:
     linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
@@ -68,16 +54,116 @@ button, a {
   background-position: -1px -1px;
 }
 
-/* Press feedback — apply via class on interactive elements. */
-.press {
-  transition: transform 160ms var(--ease-out-strong);
-}
-.press:active {
-  transform: scale(0.97);
+/* Press feedback. */
+.press { transition: transform 160ms var(--ease-out-strong); }
+.press:active { transform: scale(0.97); }
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
 }
 
-/* Row reveal used by the index. Triggered by IntersectionObserver
-   (the WorkIndex client component sets data-revealed="true"). */
+/* ─── On-load entrance primitives ──────────────────────────────────── */
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes riseLine {
+  from { transform: translateY(110%); }
+  to   { transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Fade-up block reveal — used by hero eyebrow, sub-paragraph, stats grid.
+   Pass --i for stagger order. */
+.fade-up {
+  opacity: 0;
+  animation: fadeUp 820ms var(--ease-out-strong) both;
+  animation-delay: calc(var(--i, 0) * 80ms + 100ms);
+}
+
+/* Line-mask reveal — wrap each line of large text with `.rise-mask` and
+   each inner span with `.rise-line`. The mask clips overflow so the line
+   appears to slide up from underneath. */
+.rise-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em; /* breathe for descenders */
+}
+.rise-line {
+  display: block;
+  transform: translateY(110%);
+  animation: riseLine 1000ms var(--ease-out-strong) both;
+  animation-delay: calc(var(--i, 0) * 110ms + 140ms);
+  will-change: transform;
+}
+
+/* Scale-in — used on the marquee strip and big colophon heading on view. */
+.scale-in {
+  opacity: 0;
+  animation: scaleIn 720ms var(--ease-out-strong) both;
+  animation-delay: calc(var(--i, 0) * 90ms + 100ms);
+}
+
+/* ─── Scroll-triggered reveal (set by RevealAll observer) ──────────── */
+
+.reveal-on-view {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 820ms var(--ease-out-strong),
+    transform 820ms var(--ease-out-strong);
+}
+.reveal-on-view[data-revealed="true"] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Same idea but for line-mask blocks. The mask stays static; the
+   `.reveal-line-inner` child slides up only after the parent intersects. */
+.reveal-lines .reveal-line-inner {
+  display: block;
+  transform: translateY(110%);
+  transition: transform 1000ms var(--ease-out-strong);
+  transition-delay: calc(var(--i, 0) * 110ms);
+  will-change: transform;
+}
+.reveal-lines[data-revealed="true"] .reveal-line-inner {
+  transform: translateY(0);
+}
+
+/* Children stagger — used to fade in groups (filter pills, list items). */
+.reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 620ms var(--ease-out-strong),
+    transform 620ms var(--ease-out-strong);
+}
+.reveal-stagger[data-revealed="true"] > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-stagger[data-revealed="true"] > *:nth-child(1)  { transition-delay: 0ms; }
+.reveal-stagger[data-revealed="true"] > *:nth-child(2)  { transition-delay: 50ms; }
+.reveal-stagger[data-revealed="true"] > *:nth-child(3)  { transition-delay: 100ms; }
+.reveal-stagger[data-revealed="true"] > *:nth-child(4)  { transition-delay: 150ms; }
+.reveal-stagger[data-revealed="true"] > *:nth-child(5)  { transition-delay: 200ms; }
+.reveal-stagger[data-revealed="true"] > *:nth-child(6)  { transition-delay: 250ms; }
+.reveal-stagger[data-revealed="true"] > *:nth-child(7)  { transition-delay: 300ms; }
+.reveal-stagger[data-revealed="true"] > *:nth-child(8)  { transition-delay: 350ms; }
+.reveal-stagger[data-revealed="true"] > *:nth-child(9)  { transition-delay: 400ms; }
+.reveal-stagger[data-revealed="true"] > *:nth-child(n+10) { transition-delay: 450ms; }
+
+/* ─── Row reveal used by the index ──────────────────────────────────── */
 .reveal-row {
   opacity: 0;
   transform: translateY(10px);
@@ -91,15 +177,7 @@ button, a {
   transform: translateY(0);
 }
 
-/* Big editorial text — reveal one block at a time. */
-.reveal-block {
-  opacity: 0;
-  transform: translateY(12px);
-  animation: revealRow 720ms var(--ease-out-strong) forwards;
-  animation-delay: calc(var(--i, 0) * 80ms + 60ms);
-}
-
-/* Live "now" indicator dot. */
+/* ─── Live "now" indicator dot ──────────────────────────────────────── */
 .pulse-dot {
   position: relative;
   display: inline-block;
@@ -123,7 +201,7 @@ button, a {
   100% { transform: scale(1.8); opacity: 0; }
 }
 
-/* Horizontal marquee for languages — paused on hover. */
+/* ─── Marquee ───────────────────────────────────────────────────────── */
 .marquee {
   display: flex;
   width: max-content;
@@ -133,16 +211,13 @@ button, a {
 .marquee-host:hover .marquee { animation-play-state: paused; }
 @keyframes marqueeScroll {
   from { transform: translate3d(0, 0, 0); }
-  to { transform: translate3d(-50%, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
 }
 
-/* Scroll-scrubbed word reveals. Native CSS view timelines (Chrome 115+).
-   In browsers without view timelines, the words start visible — which is
-   fine; the content is still readable. */
+/* ─── Word-level scroll scrubs (NowBlock essay) ─────────────────────── */
 .reveal-paragraph .reveal-word {
   opacity: 0.18;
   transition: opacity 200ms var(--ease-out-strong);
-  will-change: opacity;
 }
 @supports (animation-timeline: view()) {
   .reveal-paragraph {
@@ -155,33 +230,41 @@ button, a {
     animation-timeline: --reveal;
     animation-range: cover 20% cover 65%;
   }
-  @keyframes revealWord {
-    to { opacity: 1; }
-  }
+  @keyframes revealWord { to { opacity: 1; } }
 }
-/* IntersectionObserver fallback: once the paragraph enters, all words fade in. */
-.reveal-paragraph[data-revealed="true"] .reveal-word {
-  opacity: 1;
+.reveal-paragraph[data-revealed="true"] .reveal-word { opacity: 1; }
+
+/* ─── Misc ──────────────────────────────────────────────────────────── */
+.sticky-pin { position: sticky; top: 5rem; }
+
+/* Hero scroll-out scaler — value driven by Hero client wrapper via
+   --hero-progress (0 → 1). */
+.hero-shell {
+  transform-origin: 0% 50%;
+  transform: scale(calc(1 - var(--hero-progress, 0) * 0.08))
+             translateY(calc(var(--hero-progress, 0) * -16px));
+  opacity: calc(1 - var(--hero-progress, 0) * 0.55);
+  will-change: transform, opacity;
 }
 
-/* Section header pin used in NowBlock. */
-.sticky-pin {
-  position: sticky;
-  top: 5rem;
+/* Hide native scrollbar on Lenis-controlled pages. */
+html.lenis-smooth { scrollbar-color: var(--color-rule) transparent; }
+html.lenis-smooth::-webkit-scrollbar { width: 0; }
+
+/* TopBar slide-down on first paint. */
+.topbar-enter {
+  opacity: 0;
+  transform: translateY(-100%);
+  animation: fadeUp 700ms var(--ease-out-strong) 0ms both;
 }
 
-/* Hide native scrollbar on Lenis-controlled pages — keeps the rail clean. */
-html.lenis-smooth {
-  scrollbar-color: var(--color-rule) transparent;
+/* Tiny travelling bar for the "scroll for the index" cue. */
+@keyframes scrollCue {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
 }
-html.lenis-smooth::-webkit-scrollbar {
-  width: 0;
-}
-
-/* Inverted hero number (used in stat block) wants tabular figures. */
-.tabular {
-  font-variant-numeric: tabular-nums;
-  font-feature-settings: "tnum" 1;
+.scroll-cue-bar {
+  animation: scrollCue 1.8s var(--ease-in-out-strong) infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -191,4 +274,7 @@ html.lenis-smooth::-webkit-scrollbar {
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
+  .rise-line, .reveal-line-inner { transform: none !important; }
+  .reveal-on-view, .reveal-stagger > * { opacity: 1 !important; transform: none !important; }
+  .hero-shell { transform: none !important; opacity: 1 !important; }
 }
