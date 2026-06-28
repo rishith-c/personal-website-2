@@ -45,7 +45,6 @@ export default async function HomePage() {
   const ranked = rankRepos(repos);
   const topLanguages = summarizeLanguages(repos);
   const totalStars = repos.reduce((sum, repo) => sum + repo.stars, 0);
-  const current = repos[0] ?? null;
   const highlight = ranked[0] ?? null;
 
   const thisYear = new Date().getFullYear();
@@ -69,7 +68,6 @@ export default async function HomePage() {
       <main id="top" className="paper-grid">
         <HeroShell>
           <Hero
-            current={current}
             totalRepos={repos.length}
             totalStars={totalStars}
             topLanguages={topLanguages}

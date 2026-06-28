@@ -295,22 +295,17 @@ html.lenis-smooth::-webkit-scrollbar { width: 0; }
   transform-style: preserve-3d;
 }
 
-/* Commit-cadence sparkline grow-in. */
-@keyframes sparkGrow {
-  from { transform: scaleY(0); }
-  to   { transform: scaleY(1); }
-}
-.spark-bar {
-  transform-origin: bottom;
-  animation: sparkGrow 600ms var(--ease-out-strong) both;
-  animation-delay: calc(var(--d, 0ms) + 400ms);
-  transition: background-color 300ms var(--ease-out-strong);
-}
+/* Abstract hero object — slow rotations. */
+@keyframes abstractSpin { to { transform: rotate(360deg); } }
+@keyframes abstractSpinRev { to { transform: rotate(-360deg); } }
+.abstract-spin { animation: abstractSpin 60s linear infinite; }
+.abstract-spin-rev { animation: abstractSpinRev 90s linear infinite; }
+.abstract-orbit { animation: abstractSpin 14s linear infinite; }
 
 @media (prefers-reduced-motion: reduce) {
   .spatial-card { transform: none !important; }
   .spatial-layer { transform: none !important; }
-  .spark-bar { animation: none !important; transform: none !important; }
+  .abstract-spin, .abstract-spin-rev, .abstract-orbit { animation: none !important; }
 }
 
 @media (prefers-reduced-motion: reduce) {

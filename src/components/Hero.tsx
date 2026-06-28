@@ -1,10 +1,9 @@
-import type { GitHubRepo, LanguageBreakdown } from "@/lib/github";
+import type { LanguageBreakdown } from "@/lib/github";
 import HeroCanvas from "@/components/HeroCanvas";
 import QuirkTicker from "@/components/QuirkTicker";
 import SpatialCard from "@/components/SpatialCard";
 
 interface HeroProps {
-  current: GitHubRepo | null;
   totalRepos: number;
   totalStars: number;
   topLanguages: LanguageBreakdown[];
@@ -19,7 +18,6 @@ interface HeroProps {
  * starts scrolling past it.
  */
 export default function Hero({
-  current,
   totalRepos,
   totalStars,
   topLanguages,
@@ -91,9 +89,8 @@ export default function Hero({
           not by what trended.
         </p>
 
-        {/* spatial build-console card — the hero element */}
+        {/* abstract spatial object — the hero element */}
         <SpatialCard
-          current={current}
           totalRepos={totalRepos}
           totalStars={totalStars}
           languages={topLanguages.length}

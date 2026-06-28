@@ -132,6 +132,7 @@ export async function fetchAllRepos(user: string = GITHUB_USER): Promise<GitHubR
     if (!Array.isArray(raw) || raw.length === 0) break;
 
     for (const item of raw) {
+      if (item.private) continue; // never surface private work
       if (item.fork) continue;
       if (item.archived) continue;
       // Hide empty / WIP repos. No description = wasn't worth publishing.

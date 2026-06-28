@@ -1,30 +1,24 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { formatRelativeTime } from "@/lib/time";
-import type { GitHubRepo } from "@/lib/github";
 import CountUp from "@/components/CountUp";
 
 interface SpatialCardProps {
-  current: GitHubRepo | null;
   totalRepos: number;
   totalStars: number;
   languages: number;
   shippedThisYear: number;
 }
 
-// Deterministic "commit cadence" bars — flavour, not real data.
-const BARS = [4, 7, 3, 9, 6, 8, 5, 11, 7, 10, 6, 9, 4, 8, 12, 7];
-
 /**
- * The hero's spatial element: a floating "build console" card that tilts in
- * 3D toward the cursor, with its inner layers parallaxing on the Z axis so
- * the content feels like it's sitting in space above the page. Holds the
- * live status + the headline stats + a commit-cadence sparkline. Tilt is
- * gated off on touch + reduced-motion (it just sits flat).
+ * The hero's spatial element: an abstract object that tilts in 3D toward the
+ * cursor, its layers parallaxing on the Z axis so it floats above the page.
+ * Deliberately abstract — concentric geometry, a slow-rotating ring of ticks
+ * and a drifting accent node. No project data, nothing about current work;
+ * just a calm generative mark. A small grid of aggregate public stats sits
+ * beneath it. Tilt/parallax gated off on touch + reduced-motion.
  */
 export default function SpatialCard({
-  current,
   totalRepos,
   totalStars,
   languages,
@@ -42,15 +36,14 @@ export default function SpatialCard({
     if (!fineHover || reduced) return;
 
     let raf = 0;
-    let tx = 0, ty = 0; // target rot
-    let cx = 0, cy = 0; // current rot
+    let tx = 0, ty = 0;
+    let cx = 0, cy = 0;
 
     const tick = () => {
       cx += (tx - cx) * 0.12;
       cy += (ty - cy) * 0.12;
       card.style.setProperty("--rx", `${cy.toFixed(2)}deg`);
       card.style.setProperty("--ry", `${cx.toFixed(2)}deg`);
-      // light glare follows the tilt
       card.style.setProperty("--gx", `${(50 + cx * 4).toFixed(1)}%`);
       card.style.setProperty("--gy", `${(50 - cy * 4).toFixed(1)}%`);
       if (Math.abs(tx - cx) > 0.01 || Math.abs(ty - cy) > 0.01) {
@@ -85,10 +78,8 @@ export default function SpatialCard({
     };
   }, []);
 
-  const label = current
-    ? `${current.name.toLowerCase()}`
-    : "between commits";
-  const when = current ? formatRelativeTime(current.pushedAt) : "—";
+  // 32 ticks around a ring for the rotating dial.
+  const ticks = Array.from({ length: 32 }, (_, i) => i);
 
   return (
     <div
@@ -107,51 +98,79 @@ export default function SpatialCard({
           }}
         />
 
-        {/* floating accent badge — deepest layer, pops most */}
+        {/* floating accent node — deepest layer, pops most */}
         <span
           aria-hidden
-          className="spatial-layer absolute -right-2 -top-2 inline-flex size-7 items-center justify-center rounded-full bg-[color:var(--color-accent)] text-[10px] font-mono text-[color:var(--color-accent-ink)] shadow-lg"
-          style={{ ["--z" as never]: "70px" }}
+          className="spatial-layer absolute -right-2 -top-2 size-4 rounded-full bg-[color:var(--color-accent)] shadow-lg"
+          style={{ ["--z" as never]: "72px" }}
+        />
+
+        {/* abstract object */}
+        <div
+          className="spatial-layer relative mx-auto aspect-square w-full max-w-[230px]"
+          style={{ ["--z" as never]: "40px" }}
+          aria-hidden
         >
-          ●
-        </span>
+          <svg viewBox="0 0 200 200" className="h-full w-full overflow-visible">
+            {/* concentric rings */}
+            <circle cx="100" cy="100" r="86" fill="none" stroke="var(--color-rule)" strokeWidth="1" />
+            <circle cx="100" cy="100" r="60" fill="none" stroke="var(--color-rule)" strokeWidth="1" />
+            <circle cx="100" cy="100" r="34" fill="none" stroke="var(--color-rule-soft)" strokeWidth="1" />
 
-        {/* status row */}
-        <div className="spatial-layer flex items-center justify-between" style={{ ["--z" as never]: "48px" }}>
-          <span className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.16em] text-[color:var(--color-ink-mute)]">
-            <span className="pulse-dot" aria-hidden /> Now building
-          </span>
-          <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-[color:var(--color-ink-mute)]">live</span>
-        </div>
-        <div className="spatial-layer mt-1.5" style={{ ["--z" as never]: "44px" }}>
-          <p className="font-[family-name:var(--font-serif)] text-[24px] leading-none text-[color:var(--color-ink)]">
-            {label}
-          </p>
-          <p className="mt-1 font-mono text-[11.5px] text-[color:var(--color-ink-mute)]">
-            last push · {when}
-          </p>
+            {/* rotating tick dial */}
+            <g className="abstract-spin" style={{ transformOrigin: "100px 100px" }}>
+              {ticks.map((i) => {
+                const a = (i / ticks.length) * Math.PI * 2;
+                const long = i % 4 === 0;
+                const r1 = long ? 70 : 76;
+                const r2 = 82;
+                return (
+                  <line
+                    key={i}
+                    x1={100 + Math.cos(a) * r1}
+                    y1={100 + Math.sin(a) * r1}
+                    x2={100 + Math.cos(a) * r2}
+                    y2={100 + Math.sin(a) * r2}
+                    stroke={long ? "var(--color-ink-mute)" : "var(--color-rule)"}
+                    strokeWidth="1"
+                  />
+                );
+              })}
+            </g>
+
+            {/* counter-rotating square */}
+            <rect
+              x="64" y="64" width="72" height="72"
+              fill="none" stroke="var(--color-ink-mute)" strokeWidth="1"
+              className="abstract-spin-rev"
+              style={{ transformOrigin: "100px 100px" }}
+            />
+
+            {/* crosshair */}
+            <line x1="100" y1="6" x2="100" y2="22" stroke="var(--color-rule)" strokeWidth="1" />
+            <line x1="100" y1="178" x2="100" y2="194" stroke="var(--color-rule)" strokeWidth="1" />
+            <line x1="6" y1="100" x2="22" y2="100" stroke="var(--color-rule)" strokeWidth="1" />
+            <line x1="178" y1="100" x2="194" y2="100" stroke="var(--color-rule)" strokeWidth="1" />
+
+            {/* core */}
+            <circle cx="100" cy="100" r="3" fill="var(--color-ink)" />
+
+            {/* orbiting accent node */}
+            <g className="abstract-orbit" style={{ transformOrigin: "100px 100px" }}>
+              <circle cx="160" cy="100" r="4.5" fill="var(--color-accent)" />
+            </g>
+          </svg>
+
+          {/* parallax depth dots floating above the object */}
+          <span className="spatial-layer absolute left-[12%] top-[20%] size-1.5 rounded-full bg-[color:var(--color-ink-mute)]" style={{ ["--z" as never]: "60px" }} />
+          <span className="spatial-layer absolute right-[16%] top-[30%] size-1 rounded-full bg-[color:var(--color-rule)]" style={{ ["--z" as never]: "90px" }} />
+          <span className="spatial-layer absolute bottom-[18%] left-[26%] size-1 rounded-full bg-[color:var(--color-ink-mute)]" style={{ ["--z" as never]: "78px" }} />
         </div>
 
-        {/* sparkline */}
-        <div className="spatial-layer mt-4" style={{ ["--z" as never]: "34px" }}>
-          <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-[color:var(--color-ink-mute)]">
-            Commit cadence
-          </p>
-          <div className="mt-2 flex h-9 items-end gap-[3px]" aria-hidden>
-            {BARS.map((h, i) => (
-              <span
-                key={i}
-                className="spark-bar flex-1 rounded-[1px] bg-[color:var(--color-rule)] group-hover:bg-[color:var(--color-ink-mute)]"
-                style={{ height: `${(h / 12) * 100}%`, ["--d" as never]: `${i * 45}ms` }}
-              />
-            ))}
-          </div>
-        </div>
-
-        {/* stat grid */}
-        <dl className="spatial-layer mt-5 grid grid-cols-2 gap-x-6 gap-y-4 border-t border-[color:var(--color-rule-soft)] pt-4 font-mono" style={{ ["--z" as never]: "24px" }}>
+        {/* aggregate public stats */}
+        <dl className="spatial-layer mt-3 grid grid-cols-2 gap-x-6 gap-y-4 border-t border-[color:var(--color-rule-soft)] pt-4 font-mono" style={{ ["--z" as never]: "24px" }}>
           {[
-            { k: "Repos", v: totalRepos },
+            { k: "Public repos", v: totalRepos },
             { k: "Stars", v: totalStars },
             { k: "Languages", v: languages },
             { k: "Shipped '26", v: shippedThisYear },

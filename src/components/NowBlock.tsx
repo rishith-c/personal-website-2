@@ -47,7 +47,7 @@ export default function NowBlock({ topLanguages }: NowBlockProps) {
         <div className="space-y-7 text-[17px] leading-[1.65] text-[color:var(--color-ink-soft)] sm:text-[18px]">
           <RevealParagraph
             lead="On-device intelligence."
-            text="Apple is opening up real foundation-model APIs on the phone. The thing I want to build is software that thinks where it lives, with no round trip and no privacy tax. Synapse is the current experiment — predicting brain activation from intention, running on a Meta encoder."
+            text="Apple is opening up real foundation-model APIs on the phone. The thing I want to build is software that thinks where it lives — no round trip, no privacy tax. Most of my experiments right now live in that space: small models doing useful work locally."
           />
 
           <RevealParagraph
@@ -61,8 +61,8 @@ export default function NowBlock({ topLanguages }: NowBlockProps) {
 
           <ul className="reveal-stagger grid gap-3 border-t border-[color:var(--color-rule)] pt-7 font-mono text-[13px] text-[color:var(--color-ink-soft)] sm:grid-cols-2">
             <li className="flex items-baseline gap-3">
-              <span className="text-[color:var(--color-ink-mute)]">→ today</span>
-              <span>building synapse · san jose, ca</span>
+              <span className="text-[color:var(--color-ink-mute)]">→ based</span>
+              <span>san jose, ca</span>
             </li>
             <li className="flex items-baseline gap-3">
               <span className="text-[color:var(--color-ink-mute)]">→ reading</span>
