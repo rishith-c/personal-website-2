@@ -1,6 +1,8 @@
 import { formatRelativeTime } from "@/lib/time";
 import type { GitHubRepo, LanguageBreakdown } from "@/lib/github";
 import CountUp from "@/components/CountUp";
+import HeroCanvas from "@/components/HeroCanvas";
+import QuirkTicker from "@/components/QuirkTicker";
 
 interface HeroProps {
   current: GitHubRepo | null;
@@ -33,6 +35,10 @@ export default function Hero({
       aria-labelledby="hero-heading"
       className="relative mx-auto w-full max-w-[1180px] px-5 pt-16 sm:px-8 sm:pt-24"
     >
+      {/* interactive ink-dot field — decorative, sits beneath the type */}
+      <HeroCanvas />
+
+      <div className="relative z-10">
       {/* eyebrow */}
       <p
         className="fade-up font-mono text-[12px] uppercase tracking-[0.18em] text-[color:var(--color-ink-mute)]"
@@ -44,6 +50,9 @@ export default function Hero({
         <span className="mx-2 text-[color:var(--color-rule)]" aria-hidden>·</span>
         San Jose, CA
       </p>
+
+      {/* fun, rotating status line */}
+      <QuirkTicker />
 
       {/* statement — line-mask reveals */}
       <h1
@@ -146,6 +155,7 @@ export default function Hero({
         <span className="relative inline-block h-px w-14 overflow-hidden bg-[color:var(--color-rule)]">
           <span className="scroll-cue-bar absolute inset-y-0 left-0 w-1/3 bg-[color:var(--color-ink)]" />
         </span>
+      </div>
       </div>
     </section>
   );

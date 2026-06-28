@@ -55,6 +55,14 @@ export default function TopBar({ totalRepos }: TopBarProps) {
             github ↗
           </a>
           <a
+            href="https://www.linkedin.com/in/rishith-chennupati-b4ba202a4/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="press hidden rounded-sm px-2 py-1 text-[color:var(--color-ink-soft)] hover:text-[color:var(--color-ink)] sm:inline-block"
+          >
+            linkedin ↗
+          </a>
+          <a
             href="mailto:rishithchennupati@gmail.com"
             className="press hidden rounded-sm px-2 py-1 text-[color:var(--color-ink-soft)] hover:text-[color:var(--color-ink)] sm:inline-block"
           >

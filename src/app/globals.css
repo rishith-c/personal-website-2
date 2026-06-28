@@ -267,6 +267,15 @@ html.lenis-smooth::-webkit-scrollbar { width: 0; }
   animation: scrollCue 1.8s var(--ease-in-out-strong) infinite;
 }
 
+/* Blinking caret on the quirky status ticker. */
+@keyframes caretBlink {
+  0%, 45% { opacity: 1; }
+  55%, 100% { opacity: 0; }
+}
+.quirk-caret {
+  animation: caretBlink 1.1s steps(1, end) infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.001ms !important;

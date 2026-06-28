@@ -57,6 +57,16 @@ export default function Colophon() {
               </li>
               <li>
                 <a
+                  href="https://www.linkedin.com/in/rishith-chennupati-b4ba202a4/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="press inline-flex items-center gap-1.5 hover:text-[color:var(--color-ink)]"
+                >
+                  linkedin / rishith-chennupati ↗
+                </a>
+              </li>
+              <li>
+                <a
                   href="https://www.instagram.com/risheeeeth/"
                   target="_blank"
                   rel="noopener noreferrer"
