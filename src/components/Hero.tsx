@@ -1,8 +1,7 @@
-import { formatRelativeTime } from "@/lib/time";
 import type { GitHubRepo, LanguageBreakdown } from "@/lib/github";
-import CountUp from "@/components/CountUp";
 import HeroCanvas from "@/components/HeroCanvas";
 import QuirkTicker from "@/components/QuirkTicker";
+import SpatialCard from "@/components/SpatialCard";
 
 interface HeroProps {
   current: GitHubRepo | null;
@@ -26,10 +25,6 @@ export default function Hero({
   topLanguages,
   shippedThisYear,
 }: HeroProps) {
-  const currentLabel = current
-    ? `${current.name.toLowerCase()} · ${formatRelativeTime(current.pushedAt)}`
-    : "between commits";
-
   return (
     <section
       aria-labelledby="hero-heading"
@@ -96,53 +91,14 @@ export default function Hero({
           not by what trended.
         </p>
 
-        {/* live + metadata column */}
-        <dl className="grid grid-cols-2 gap-x-6 gap-y-5 self-start text-[13px] font-mono text-[color:var(--color-ink-soft)] sm:max-w-[280px]">
-          <div className="fade-up col-span-2" style={{ ["--i" as never]: 7 }}>
-            <dt className="flex items-center gap-2 text-[11px] uppercase tracking-[0.16em] text-[color:var(--color-ink-mute)]">
-              <span className="pulse-dot" aria-hidden /> Now
-            </dt>
-            <dd className="mt-1.5 text-[14.5px] text-[color:var(--color-ink)]">
-              {currentLabel}
-            </dd>
-          </div>
-
-          <div className="fade-up" style={{ ["--i" as never]: 8 }}>
-            <dt className="text-[11px] uppercase tracking-[0.16em] text-[color:var(--color-ink-mute)]">
-              Repos
-            </dt>
-            <dd className="mt-1 text-[20px] text-[color:var(--color-ink)]">
-              <CountUp to={totalRepos} />
-            </dd>
-          </div>
-
-          <div className="fade-up" style={{ ["--i" as never]: 9 }}>
-            <dt className="text-[11px] uppercase tracking-[0.16em] text-[color:var(--color-ink-mute)]">
-              Stars
-            </dt>
-            <dd className="mt-1 text-[20px] text-[color:var(--color-ink)]">
-              <CountUp to={totalStars} />
-            </dd>
-          </div>
-
-          <div className="fade-up" style={{ ["--i" as never]: 10 }}>
-            <dt className="text-[11px] uppercase tracking-[0.16em] text-[color:var(--color-ink-mute)]">
-              Languages
-            </dt>
-            <dd className="mt-1 text-[20px] text-[color:var(--color-ink)]">
-              <CountUp to={topLanguages.length} />
-            </dd>
-          </div>
-
-          <div className="fade-up" style={{ ["--i" as never]: 11 }}>
-            <dt className="text-[11px] uppercase tracking-[0.16em] text-[color:var(--color-ink-mute)]">
-              Shipped &lsquo;26
-            </dt>
-            <dd className="mt-1 text-[20px] text-[color:var(--color-ink)]">
-              <CountUp to={shippedThisYear} />
-            </dd>
-          </div>
-        </dl>
+        {/* spatial build-console card — the hero element */}
+        <SpatialCard
+          current={current}
+          totalRepos={totalRepos}
+          totalStars={totalStars}
+          languages={topLanguages.length}
+          shippedThisYear={shippedThisYear}
+        />
       </div>
 
       {/* tiny scroll cue */}

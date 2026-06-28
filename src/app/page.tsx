@@ -11,6 +11,8 @@ import NowBlock from "@/components/NowBlock";
 import Colophon from "@/components/Colophon";
 import SmoothScroll from "@/components/SmoothScroll";
 import ScrollHUD from "@/components/ScrollHUD";
+import CornerHUD from "@/components/CornerHUD";
+import KeyNav from "@/components/KeyNav";
 import Marquee from "@/components/Marquee";
 import RevealAll from "@/components/RevealAll";
 
@@ -61,6 +63,8 @@ export default async function HomePage() {
       <SmoothScroll />
       <RevealAll />
       <ScrollHUD />
+      <CornerHUD />
+      <KeyNav />
       <TopBar totalRepos={repos.length} />
       <main id="top" className="paper-grid">
         <HeroShell>
