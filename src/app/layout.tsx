@@ -1,32 +1,25 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import { Instrument_Serif, Inter } from "next/font/google";
 import "./globals.css";
-
-const geist = Geist({
-  subsets: ["latin"],
-  variable: "--font-sans",
-  display: "swap",
-});
-
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono",
-  display: "swap",
-});
+import { LenisProvider } from "@/components/experience/LenisProvider";
 
 const instrumentSerif = Instrument_Serif({
+  variable: "--font-instrument",
   subsets: ["latin"],
   weight: "400",
   style: ["normal", "italic"],
-  variable: "--font-serif",
-  display: "swap",
+});
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://rishithc.com"),
   title: "rishith chennupati · index",
   description:
-    "Rishith Chennupati. Fifteen years old, San Jose, CA. Building ios apps, ai systems, web platforms, and hardware. An index of everything.",
+    "Rishith Chennupati. Fifteen, San Jose. A scroll portfolio: iOS apps, on-device AI, web platforms, and an autonomous drone named Prometheus.",
   keywords: [
     "rishith chennupati",
     "rishith",
@@ -34,13 +27,14 @@ export const metadata: Metadata = {
     "ios developer",
     "swift",
     "ai engineer",
+    "drone",
     "san jose",
   ],
   authors: [{ name: "Rishith Chennupati" }],
   openGraph: {
     title: "rishith chennupati · index",
     description:
-      "Fifteen years old, San Jose, CA. Building ios apps, ai systems, web platforms, and hardware. An index of everything.",
+      "Fifteen, San Jose. iOS apps, on-device AI, web, and an autonomous drone. Scroll through it.",
     url: "https://rishithc.com",
     siteName: "rishith chennupati",
     type: "website",
@@ -48,7 +42,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "rishith chennupati · index",
-    description: "Fifteen. San Jose. iOS, AI, web, hardware. An index.",
+    description: "Fifteen. San Jose. iOS, AI, web, hardware. Scroll through it.",
   },
 };
 
@@ -56,18 +50,14 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="en"
-      className={`${geist.variable} ${geistMono.variable} ${instrumentSerif.variable}`}
-    >
-      <body className="min-h-dvh">
-        <a
-          href="#index"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-sm focus:bg-[var(--color-ink)] focus:px-3 focus:py-2 focus:text-[var(--color-bg)]"
-        >
-          Skip to index
-        </a>
-        {children}
+    <html lang="en" className={`${instrumentSerif.variable} ${inter.variable}`}>
+      <head>
+        <link rel="preload" as="image" href="/assets/frames/f0001.jpg" fetchPriority="high" />
+        <link rel="preload" as="image" href="/assets/frames/f0002.jpg" />
+        <link rel="preload" as="image" href="/assets/frames/f0003.jpg" />
+      </head>
+      <body className="antialiased">
+        <LenisProvider>{children}</LenisProvider>
       </body>
     </html>
   );

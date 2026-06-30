@@ -1,326 +1,57 @@
 @import "tailwindcss";
 
-@theme {
-  --color-bg: oklch(0.985 0.003 90);
-  --color-bg-elevated: oklch(1 0 0);
-  --color-ink: oklch(0.16 0.008 50);
-  --color-ink-soft: oklch(0.36 0.008 50);
-  --color-ink-mute: oklch(0.55 0.008 50);
-  --color-rule: oklch(0.86 0.008 50);
-  --color-rule-soft: oklch(0.92 0.005 50);
-  --color-accent: oklch(0.58 0.21 28);
-  --color-accent-ink: oklch(0.99 0 0);
-
-  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, monospace;
-  --font-serif: var(--font-serif), "Iowan Old Style", "Apple Garamond", Georgia, serif;
-
-  --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
-  --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
-  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
-}
-
 :root {
-  color-scheme: light;
-  --grid-line: oklch(0.92 0.005 50 / 0.7);
+  --background: #07120c;
+  --foreground: #f4f6f3;
 }
 
-html, body { background: var(--color-bg); color: var(--color-ink); }
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-instrument);
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
 
 body {
-  font-family: var(--font-sans);
-  font-feature-settings: "ss01" on, "cv11" on, "cv01" on, "calt" 1;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
+  margin: 0;
+  background: #07120c;
+  color: var(--foreground);
+  font-family: var(--font-inter), system-ui, sans-serif;
+  overflow-x: hidden;
 }
 
-::selection { background: var(--color-accent); color: var(--color-accent-ink); }
-
-a { color: inherit; text-decoration: none; }
-button, a { -webkit-tap-highlight-color: transparent; }
-
-:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 3px;
-  border-radius: 2px;
+::selection {
+  background: rgba(255, 255, 255, 0.22);
 }
 
-.paper-grid {
-  background-image:
-    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
-  background-size: 96px 96px;
-  background-position: -1px -1px;
+/* Keeps text readable over any frame of the scene. */
+.nat-text {
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.45),
+    0 4px 16px rgba(0, 0, 0, 0.35);
 }
 
-/* Press feedback. */
-.press { transition: transform 160ms var(--ease-out-strong); }
-.press:active { transform: scale(0.97); }
-
-.tabular {
-  font-variant-numeric: tabular-nums;
-  font-feature-settings: "tnum" 1;
-}
-
-/* ─── On-load entrance primitives ──────────────────────────────────── */
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(14px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes riseLine {
-  from { transform: translateY(110%); }
-  to   { transform: translateY(0); }
-}
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-@keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.96); }
-  to   { opacity: 1; transform: scale(1); }
-}
-
-/* Fade-up block reveal — used by hero eyebrow, sub-paragraph, stats grid.
-   Pass --i for stagger order. */
-.fade-up {
-  opacity: 0;
-  animation: fadeUp 820ms var(--ease-out-strong) both;
-  animation-delay: calc(var(--i, 0) * 80ms + 100ms);
-}
-
-/* Line-mask reveal — wrap each line of large text with `.rise-mask` and
-   each inner span with `.rise-line`. The mask clips overflow so the line
-   appears to slide up from underneath. */
-.rise-mask {
-  display: block;
-  overflow: hidden;
-  padding-bottom: 0.06em; /* breathe for descenders */
-}
-.rise-line {
-  display: block;
-  transform: translateY(110%);
-  animation: riseLine 1000ms var(--ease-out-strong) both;
-  animation-delay: calc(var(--i, 0) * 110ms + 140ms);
-  will-change: transform;
-}
-
-/* Scale-in — used on the marquee strip and big colophon heading on view. */
-.scale-in {
-  opacity: 0;
-  animation: scaleIn 720ms var(--ease-out-strong) both;
-  animation-delay: calc(var(--i, 0) * 90ms + 100ms);
-}
-
-/* ─── Scroll-triggered reveal (set by RevealAll observer) ──────────── */
-
-.reveal-on-view {
-  opacity: 0;
-  transform: translateY(28px);
-  filter: blur(9px);
-  transition:
-    opacity 1000ms var(--ease-out-strong),
-    transform 1000ms var(--ease-out-strong),
-    filter 1000ms var(--ease-out-strong);
-}
-.reveal-on-view[data-revealed="true"] {
-  opacity: 1;
-  transform: translateY(0);
-  filter: blur(0);
-}
-
-/* Same idea but for line-mask blocks. The mask stays static; the
-   `.reveal-line-inner` child slides up only after the parent intersects. */
-.reveal-lines .reveal-line-inner {
-  display: block;
-  transform: translateY(110%);
-  transition: transform 1000ms var(--ease-out-strong);
-  transition-delay: calc(var(--i, 0) * 110ms);
-  will-change: transform;
-}
-.reveal-lines[data-revealed="true"] .reveal-line-inner {
-  transform: translateY(0);
-}
-
-/* Children stagger — used to fade in groups (filter pills, list items). */
-.reveal-stagger > * {
-  opacity: 0;
-  transform: translateY(16px);
-  filter: blur(6px);
-  transition:
-    opacity 720ms var(--ease-out-strong),
-    transform 720ms var(--ease-out-strong),
-    filter 720ms var(--ease-out-strong);
-}
-.reveal-stagger[data-revealed="true"] > * {
-  opacity: 1;
-  transform: translateY(0);
-  filter: blur(0);
-}
-.reveal-stagger[data-revealed="true"] > *:nth-child(1)  { transition-delay: 0ms; }
-.reveal-stagger[data-revealed="true"] > *:nth-child(2)  { transition-delay: 50ms; }
-.reveal-stagger[data-revealed="true"] > *:nth-child(3)  { transition-delay: 100ms; }
-.reveal-stagger[data-revealed="true"] > *:nth-child(4)  { transition-delay: 150ms; }
-.reveal-stagger[data-revealed="true"] > *:nth-child(5)  { transition-delay: 200ms; }
-.reveal-stagger[data-revealed="true"] > *:nth-child(6)  { transition-delay: 250ms; }
-.reveal-stagger[data-revealed="true"] > *:nth-child(7)  { transition-delay: 300ms; }
-.reveal-stagger[data-revealed="true"] > *:nth-child(8)  { transition-delay: 350ms; }
-.reveal-stagger[data-revealed="true"] > *:nth-child(9)  { transition-delay: 400ms; }
-.reveal-stagger[data-revealed="true"] > *:nth-child(n+10) { transition-delay: 450ms; }
-
-/* ─── Row reveal used by the index ──────────────────────────────────── */
-.reveal-row {
-  opacity: 0;
-  transform: translateY(14px);
-  filter: blur(5px);
-  transition:
-    opacity 720ms var(--ease-out-strong),
-    transform 720ms var(--ease-out-strong),
-    filter 720ms var(--ease-out-strong);
-  transition-delay: calc(var(--i, 0) * 28ms);
-}
-.reveal-row[data-revealed="true"] {
-  opacity: 1;
-  transform: translateY(0);
-  filter: blur(0);
-}
-
-/* ─── Live "now" indicator dot ──────────────────────────────────────── */
-.pulse-dot {
-  position: relative;
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 9999px;
-  background: var(--color-accent);
-}
-.pulse-dot::after {
-  content: "";
-  position: absolute;
-  inset: -3px;
-  border-radius: 9999px;
-  background: var(--color-accent);
-  opacity: 0.4;
-  animation: pulseRing 1.8s var(--ease-out-strong) infinite;
-}
-@keyframes pulseRing {
-  0% { transform: scale(0.6); opacity: 0.5; }
-  80% { transform: scale(1.8); opacity: 0; }
-  100% { transform: scale(1.8); opacity: 0; }
-}
-
-/* ─── Marquee ───────────────────────────────────────────────────────── */
-.marquee {
-  display: flex;
-  width: max-content;
-  animation: marqueeScroll 55s linear infinite;
-  will-change: transform;
-}
-.marquee-host:hover .marquee { animation-play-state: paused; }
-@keyframes marqueeScroll {
-  from { transform: translate3d(0, 0, 0); }
-  to   { transform: translate3d(-50%, 0, 0); }
-}
-
-/* ─── Word-level scroll scrubs (NowBlock essay) ─────────────────────── */
-.reveal-paragraph .reveal-word {
-  opacity: 0.18;
-  transition: opacity 200ms var(--ease-out-strong);
-}
-@supports (animation-timeline: view()) {
-  .reveal-paragraph {
-    view-timeline-name: --reveal;
-    view-timeline-axis: block;
-  }
-  .reveal-paragraph .reveal-word {
-    opacity: 0.18;
-    animation: revealWord linear forwards;
-    animation-timeline: --reveal;
-    animation-range: cover 20% cover 65%;
-  }
-  @keyframes revealWord { to { opacity: 1; } }
-}
-.reveal-paragraph[data-revealed="true"] .reveal-word { opacity: 1; }
-
-/* ─── Misc ──────────────────────────────────────────────────────────── */
-.sticky-pin { position: sticky; top: 5rem; }
-
-/* Hero scroll-out scaler — value driven by Hero client wrapper via
-   --hero-progress (0 → 1). */
-.hero-shell {
-  transform-origin: 0% 50%;
-  transform: scale(calc(1 - var(--hero-progress, 0) * 0.08))
-             translateY(calc(var(--hero-progress, 0) * -16px));
-  opacity: calc(1 - var(--hero-progress, 0) * 0.55);
-  will-change: transform, opacity;
-}
-
-/* Hide native scrollbar on Lenis-controlled pages. */
-html.lenis-smooth { scrollbar-color: var(--color-rule) transparent; }
-html.lenis-smooth::-webkit-scrollbar { width: 0; }
-
-/* TopBar slide-down on first paint. */
-.topbar-enter {
-  opacity: 0;
-  transform: translateY(-100%);
-  animation: fadeUp 700ms var(--ease-out-strong) 0ms both;
-}
-
-/* Tiny travelling bar for the "scroll for the index" cue. */
-@keyframes scrollCue {
-  0%   { transform: translateX(-100%); }
-  100% { transform: translateX(300%); }
-}
-.scroll-cue-bar {
-  animation: scrollCue 1.8s var(--ease-in-out-strong) infinite;
-}
-
-/* Blinking caret on the quirky status ticker. */
-@keyframes caretBlink {
-  0%, 45% { opacity: 1; }
-  55%, 100% { opacity: 0; }
-}
-.quirk-caret {
-  animation: caretBlink 1.1s steps(1, end) infinite;
-}
-
-/* ─── Spatial 3D-tilt card (hero element) ───────────────────────────── */
-.spatial-perspective {
-  perspective: 900px;
-}
-.spatial-card {
-  transform-style: preserve-3d;
-  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
-  transition: box-shadow 300ms var(--ease-out-strong);
-  box-shadow: 0 1px 2px oklch(0 0 0 / 0.04), 0 12px 30px -18px oklch(0 0 0 / 0.18);
-}
-.spatial-card[data-lift="true"] {
-  box-shadow: 0 1px 2px oklch(0 0 0 / 0.05), 0 28px 60px -22px oklch(0 0 0 / 0.28);
-}
-/* Inner layers float on the Z axis so the card reads as depth, not a sticker. */
-.spatial-layer {
-  transform: translateZ(var(--z, 0));
-  transform-style: preserve-3d;
+.nat-panel {
+  background: rgba(7, 12, 10, 0.28);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .spatial-card { transform: none !important; }
-  .spatial-layer { transform: none !important; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
-  .rise-line, .reveal-line-inner { transform: none !important; }
-  .reveal-on-view, .reveal-stagger > *, .reveal-row {
-    opacity: 1 !important;
-    transform: none !important;
-    filter: none !important;
-  }
-  .hero-shell { transform: none !important; opacity: 1 !important; }
 }
