@@ -4,8 +4,13 @@ export default function Header() {
       <div className="df-header-blur" aria-hidden />
       <div className="df-header-inner">
         <a href="#top" className="df-logo" aria-label="Rishith Chennupati, home">
-          <span className="dot" aria-hidden />
-          rishith<em>.c</em>
+          <svg className="mark" viewBox="0 0 24 24" aria-hidden>
+            <rect x="2" y="2" width="20" height="20" rx="6" fill="#2563eb" />
+            <rect x="13.5" y="2" width="8.5" height="8.5" rx="3" fill="#93c5fd" />
+          </svg>
+          <span className="name">
+            rishith<em>c</em>
+          </span>
         </a>
 
         <div className="df-header-end">
@@ -14,6 +19,14 @@ export default function Header() {
             <a href="#work">Work</a>
             <a href="#robotics">Robotics</a>
             <a href="#contact">Contact</a>
+          </nav>
+          <nav className="df-nav-pill df-nav-pill--solo" aria-label="LinkedIn">
+            <a href="https://www.linkedin.com/in/rishith-chennupati-b4ba202a4/" target="_blank" rel="noopener noreferrer">
+              LinkedIn
+            </a>
+          </nav>
+          <nav className="df-nav-pill df-nav-pill--solo" aria-label="Email">
+            <a href="mailto:rishithchennupati@gmail.com">Email</a>
           </nav>
           <a
             href="https://github.com/rishith-c"
