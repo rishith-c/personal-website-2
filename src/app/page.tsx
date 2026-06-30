@@ -37,7 +37,7 @@ export default async function HomePage() {
             Building things that don&rsquo;t exist yet.
           </h1>
           <p className="hero-lead anim-body" data-anim="body" data-hero>
-            I&rsquo;m fifteen. I started writing code in middle school and haven&rsquo;t
+            I&rsquo;m fourteen. I started writing code in middle school and haven&rsquo;t
             really stopped since: iOS apps, on-device AI, web platforms, and lately a
             drone that flies itself. Everything I&rsquo;ve made public lives below.
           </p>

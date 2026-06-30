@@ -19,12 +19,12 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://rishithc.com"),
   title: "Rishith Chennupati · building things that don't exist yet",
   description:
-    "Rishith Chennupati. Fifteen, San Jose. iOS apps, on-device AI, web platforms, and an autonomous drone named Prometheus. Everything I've shipped, in one place.",
+    "Rishith Chennupati. Fourteen, San Jose. iOS apps, on-device AI, web platforms, and an autonomous drone named Prometheus. Everything I've shipped, in one place.",
   keywords: ["rishith chennupati", "portfolio", "ios developer", "swift", "ai", "drone", "san jose"],
   authors: [{ name: "Rishith Chennupati" }],
   openGraph: {
     title: "Rishith Chennupati · building things that don't exist yet",
-    description: "Fifteen, San Jose. iOS, on-device AI, web, and an autonomous drone.",
+    description: "Fourteen, San Jose. iOS, on-device AI, web, and an autonomous drone.",
     url: "https://rishithc.com",
     siteName: "Rishith Chennupati",
     type: "website",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Rishith Chennupati",
-    description: "Fifteen. San Jose. iOS, AI, web, hardware.",
+    description: "Fourteen. San Jose. iOS, AI, web, hardware.",
   },
 };
 
