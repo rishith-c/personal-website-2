@@ -64,38 +64,44 @@ a { color: inherit; text-decoration: none; }
   width: 100%; max-width: var(--max-w); margin: 0 auto;
   padding: 0 var(--frame-buffer); min-height: var(--nav-h);
 }
-.df-logo { display: inline-flex; align-items: center; gap: 10px; }
+.df-logo { display: inline-flex; align-items: center; gap: 8px; color: var(--text-primary); }
 .df-logo .mark { width: 26px; height: 26px; flex: none; }
 .df-logo .name {
-  font-family: var(--serif); font-size: 22px; font-weight: 500; letter-spacing: -0.01em;
-  color: var(--text-primary);
+  font-family: var(--serif); font-size: 24px; font-weight: 300; line-height: 1; letter-spacing: -0.02em;
 }
-.df-logo .name em { font-style: italic; color: var(--brand); }
-.df-header-end { display: flex; align-items: center; gap: 10px; }
+.df-logo .name em { font-style: italic; font-weight: 400; color: var(--brand); }
 
-/* Pills — main grouped nav + solo pills, datafruit style */
+.df-header-end { display: flex; align-items: center; gap: 12px; margin-left: auto; }
+
+/* Pills — exact datafruit/supercompress glass rounded-rect pills */
 .df-nav-pill {
-  display: none; align-items: center; gap: 2px;
-  background: rgba(255, 255, 255, 0.72);
-  border: 1px solid var(--card-border);
-  border-radius: 999px; padding: 5px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  display: none; align-items: center; height: 40px; gap: 4px; padding: 0 4px;
+  border-radius: 6px; border: 1px solid rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42), 0 12px 24px rgba(0, 0, 0, 0.08);
 }
+.df-nav-pill--solo { padding: 0 4px; flex-shrink: 0; }
 .df-nav-pill a {
-  font-size: 14.5px; color: var(--text-body); padding: 9px 16px; border-radius: 999px;
-  transition: color 0.18s, background 0.18s; white-space: nowrap;
-}
-.df-nav-pill a:hover { color: var(--text-primary); background: rgba(0, 0, 0, 0.045); }
-.df-nav-pill--solo { padding: 5px; }
-@media (min-width: 940px) {
-  .df-nav-pill, .df-nav-pill--solo { display: inline-flex; }
-}
-.df-github {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 42px; height: 42px; border-radius: 999px;
-  border: 1px solid var(--card-border); background: rgba(255, 255, 255, 0.72);
-  color: var(--text-primary); transition: color 0.18s, border-color 0.18s, background 0.18s;
+  min-width: 96px; height: 32px; padding: 0 16px;
+  font-size: 14px; font-weight: 400; color: var(--text-primary);
+  border-radius: 6px; transition: background 0.2s, color 0.2s; white-space: nowrap;
 }
-.df-github:hover { border-color: var(--text-muted); background: #fff; }
+.df-nav-pill a:hover { background: rgba(229, 229, 229, 0.9); color: #404040; }
+@media (min-width: 820px) { .df-nav-pill { display: flex; } }
+@media (min-width: 1000px) { .df-nav-pill--solo { display: flex; } }
+@media (max-width: 999px) { .df-nav-pill--solo { display: none; } }
+
+.df-github {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width: 40px; height: 40px; border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.15); background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); color: var(--text-primary);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42), 0 12px 24px rgba(0, 0, 0, 0.08);
+  transition: background 0.2s, color 0.2s;
+}
+.df-github:hover { background: rgba(229, 229, 229, 0.9); color: #404040; }
 
 /* ── Buttons ────────────────────────────────────────────────────────── */
 .btn-brand {
