@@ -1,7 +1,13 @@
+// Inline so the build's CSS minifier can't drop the unprefixed property
+// (it strips `backdrop-filter` and keeps only the -webkit- alias, which
+// Chrome ignores — killing the frosted glass).
+const blur14 = { backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)" } as const;
+const glass = { backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)" } as const;
+
 export default function Header() {
   return (
     <header className="df-header">
-      <div className="df-header-blur" aria-hidden />
+      <div className="df-header-blur" style={blur14} aria-hidden />
       <div className="df-header-inner">
         <a href="#top" className="df-logo" aria-label="Rishith Chennupati, home">
           <svg className="mark" viewBox="0 0 24 24" aria-hidden>
@@ -14,18 +20,18 @@ export default function Header() {
         </a>
 
         <div className="df-header-end">
-          <nav className="df-nav-pill" aria-label="Main">
+          <nav className="df-nav-pill" style={glass} aria-label="Main">
             <a href="#about">About</a>
             <a href="#work">Work</a>
             <a href="#robotics">Robotics</a>
             <a href="#contact">Contact</a>
           </nav>
-          <nav className="df-nav-pill df-nav-pill--solo" aria-label="LinkedIn">
+          <nav className="df-nav-pill df-nav-pill--solo" style={glass} aria-label="LinkedIn">
             <a href="https://www.linkedin.com/in/rishith-chennupati-b4ba202a4/" target="_blank" rel="noopener noreferrer">
               LinkedIn
             </a>
           </nav>
-          <nav className="df-nav-pill df-nav-pill--solo" aria-label="Email">
+          <nav className="df-nav-pill df-nav-pill--solo" style={glass} aria-label="Email">
             <a href="mailto:rishithchennupati@gmail.com">Email</a>
           </nav>
           <a
@@ -33,6 +39,7 @@ export default function Header() {
             target="_blank"
             rel="noopener noreferrer"
             className="df-github"
+            style={glass}
             aria-label="GitHub"
           >
             <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
