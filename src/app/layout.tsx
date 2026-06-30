@@ -1,64 +1,43 @@
 import type { Metadata } from "next";
-import { Instrument_Serif, Inter } from "next/font/google";
+import { Platypi, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { LenisProvider } from "@/components/experience/LenisProvider";
 
-const instrumentSerif = Instrument_Serif({
-  variable: "--font-instrument",
+const platypi = Platypi({
   subsets: ["latin"],
-  weight: "400",
+  weight: ["300", "400", "500"],
   style: ["normal", "italic"],
+  variable: "--font-platypi",
+  display: "swap",
 });
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
+const geist = Geist({ subsets: ["latin"], variable: "--font-geist", display: "swap" });
+const geistMono = Geist_Mono({ subsets: ["latin"], variable: "--font-geist-mono", display: "swap" });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://rishithc.com"),
-  title: "rishith chennupati · index",
+  title: "Rishith Chennupati · building things that don't exist yet",
   description:
-    "Rishith Chennupati. Fifteen, San Jose. A scroll portfolio: iOS apps, on-device AI, web platforms, and an autonomous drone named Prometheus.",
-  keywords: [
-    "rishith chennupati",
-    "rishith",
-    "portfolio",
-    "ios developer",
-    "swift",
-    "ai engineer",
-    "drone",
-    "san jose",
-  ],
+    "Rishith Chennupati. Fifteen, San Jose. iOS apps, on-device AI, web platforms, and an autonomous drone named Prometheus. Everything I've shipped, in one place.",
+  keywords: ["rishith chennupati", "portfolio", "ios developer", "swift", "ai", "drone", "san jose"],
   authors: [{ name: "Rishith Chennupati" }],
   openGraph: {
-    title: "rishith chennupati · index",
-    description:
-      "Fifteen, San Jose. iOS apps, on-device AI, web, and an autonomous drone. Scroll through it.",
+    title: "Rishith Chennupati · building things that don't exist yet",
+    description: "Fifteen, San Jose. iOS, on-device AI, web, and an autonomous drone.",
     url: "https://rishithc.com",
-    siteName: "rishith chennupati",
+    siteName: "Rishith Chennupati",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "rishith chennupati · index",
-    description: "Fifteen. San Jose. iOS, AI, web, hardware. Scroll through it.",
+    title: "Rishith Chennupati",
+    description: "Fifteen. San Jose. iOS, AI, web, hardware.",
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${instrumentSerif.variable} ${inter.variable}`}>
-      <head>
-        <link rel="preload" as="image" href="/assets/frames/f0001.jpg" fetchPriority="high" />
-        <link rel="preload" as="image" href="/assets/frames/f0002.jpg" />
-        <link rel="preload" as="image" href="/assets/frames/f0003.jpg" />
-      </head>
-      <body className="antialiased">
-        <LenisProvider>{children}</LenisProvider>
-      </body>
+    <html lang="en" className={`${platypi.variable} ${geist.variable} ${geistMono.variable}`}>
+      <body>{children}</body>
     </html>
   );
 }
