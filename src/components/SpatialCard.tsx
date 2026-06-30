@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import CountUp from "@/components/CountUp";
+import OrbCanvas from "@/components/OrbCanvas";
 
 interface SpatialCardProps {
   totalRepos: number;
@@ -11,12 +12,11 @@ interface SpatialCardProps {
 }
 
 /**
- * The hero's spatial element: an abstract object that tilts in 3D toward the
- * cursor, its layers parallaxing on the Z axis so it floats above the page.
- * Deliberately abstract — concentric geometry, a slow-rotating ring of ticks
- * and a drifting accent node. No project data, nothing about current work;
- * just a calm generative mark. A small grid of aggregate public stats sits
- * beneath it. Tilt/parallax gated off on touch + reduced-motion.
+ * The hero's spatial element: a live 3D orb that tilts toward the cursor while
+ * its layers parallax on the Z axis, so the whole card floats above the page.
+ * The orb itself is a real-time shader (graphite metal, warm rim, drifting
+ * light) and reacts to where you point. A small grid of aggregate public stats
+ * sits beneath it. Tilt/parallax gated off on touch + reduced-motion.
  */
 export default function SpatialCard({
   totalRepos,
@@ -78,9 +78,6 @@ export default function SpatialCard({
     };
   }, []);
 
-  // 32 ticks around a ring for the rotating dial.
-  const ticks = Array.from({ length: 32 }, (_, i) => i);
-
   return (
     <div
       ref={wrapRef}
@@ -105,66 +102,26 @@ export default function SpatialCard({
           style={{ ["--z" as never]: "72px" }}
         />
 
-        {/* abstract object */}
+        {/* live 3D orb */}
         <div
           className="spatial-layer relative mx-auto aspect-square w-full max-w-[230px]"
           style={{ ["--z" as never]: "40px" }}
           aria-hidden
         >
-          <svg viewBox="0 0 200 200" className="h-full w-full overflow-visible">
-            {/* concentric rings */}
-            <circle cx="100" cy="100" r="86" fill="none" stroke="var(--color-rule)" strokeWidth="1" />
-            <circle cx="100" cy="100" r="60" fill="none" stroke="var(--color-rule)" strokeWidth="1" />
-            <circle cx="100" cy="100" r="34" fill="none" stroke="var(--color-rule-soft)" strokeWidth="1" />
+          {/* faint ground halo so the metal reads as sitting in space */}
+          <span
+            className="pointer-events-none absolute inset-[6%] rounded-full"
+            style={{
+              background:
+                "radial-gradient(closest-side, color-mix(in oklch, var(--color-ink) 9%, transparent), transparent 72%)",
+            }}
+          />
+          <OrbCanvas className="relative drop-shadow-[0_18px_30px_rgba(20,16,16,0.28)]" />
 
-            {/* rotating tick dial */}
-            <g className="abstract-spin" style={{ transformOrigin: "100px 100px" }}>
-              {ticks.map((i) => {
-                const a = (i / ticks.length) * Math.PI * 2;
-                const long = i % 4 === 0;
-                const r1 = long ? 70 : 76;
-                const r2 = 82;
-                return (
-                  <line
-                    key={i}
-                    x1={100 + Math.cos(a) * r1}
-                    y1={100 + Math.sin(a) * r1}
-                    x2={100 + Math.cos(a) * r2}
-                    y2={100 + Math.sin(a) * r2}
-                    stroke={long ? "var(--color-ink-mute)" : "var(--color-rule)"}
-                    strokeWidth="1"
-                  />
-                );
-              })}
-            </g>
-
-            {/* counter-rotating square */}
-            <rect
-              x="64" y="64" width="72" height="72"
-              fill="none" stroke="var(--color-ink-mute)" strokeWidth="1"
-              className="abstract-spin-rev"
-              style={{ transformOrigin: "100px 100px" }}
-            />
-
-            {/* crosshair */}
-            <line x1="100" y1="6" x2="100" y2="22" stroke="var(--color-rule)" strokeWidth="1" />
-            <line x1="100" y1="178" x2="100" y2="194" stroke="var(--color-rule)" strokeWidth="1" />
-            <line x1="6" y1="100" x2="22" y2="100" stroke="var(--color-rule)" strokeWidth="1" />
-            <line x1="178" y1="100" x2="194" y2="100" stroke="var(--color-rule)" strokeWidth="1" />
-
-            {/* core */}
-            <circle cx="100" cy="100" r="3" fill="var(--color-ink)" />
-
-            {/* orbiting accent node */}
-            <g className="abstract-orbit" style={{ transformOrigin: "100px 100px" }}>
-              <circle cx="160" cy="100" r="4.5" fill="var(--color-accent)" />
-            </g>
-          </svg>
-
-          {/* parallax depth dots floating above the object */}
-          <span className="spatial-layer absolute left-[12%] top-[20%] size-1.5 rounded-full bg-[color:var(--color-ink-mute)]" style={{ ["--z" as never]: "60px" }} />
-          <span className="spatial-layer absolute right-[16%] top-[30%] size-1 rounded-full bg-[color:var(--color-rule)]" style={{ ["--z" as never]: "90px" }} />
-          <span className="spatial-layer absolute bottom-[18%] left-[26%] size-1 rounded-full bg-[color:var(--color-ink-mute)]" style={{ ["--z" as never]: "78px" }} />
+          {/* parallax depth dots floating above the orb */}
+          <span className="spatial-layer absolute left-[10%] top-[16%] size-1.5 rounded-full bg-[color:var(--color-ink-mute)]" style={{ ["--z" as never]: "66px" }} />
+          <span className="spatial-layer absolute right-[12%] top-[26%] size-1 rounded-full bg-[color:var(--color-rule)]" style={{ ["--z" as never]: "94px" }} />
+          <span className="spatial-layer absolute bottom-[12%] left-[22%] size-1 rounded-full bg-[color:var(--color-ink-mute)]" style={{ ["--z" as never]: "80px" }} />
         </div>
 
         {/* aggregate public stats */}

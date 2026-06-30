@@ -7,6 +7,7 @@ import TopBar from "@/components/TopBar";
 import Hero from "@/components/Hero";
 import HeroShell from "@/components/HeroShell";
 import WorkIndex from "@/components/WorkIndex";
+import Robotics from "@/components/Robotics";
 import NowBlock from "@/components/NowBlock";
 import Colophon from "@/components/Colophon";
 import SmoothScroll from "@/components/SmoothScroll";
@@ -79,6 +80,7 @@ export default async function HomePage() {
           <Marquee items={marqueeItems} />
         </div>
         <WorkIndex repos={repos} rankedRepos={ranked} highlight={highlight} />
+        <Robotics />
         <NowBlock topLanguages={topLanguages} />
       </main>
       <Colophon />

@@ -24,7 +24,7 @@ const instrumentSerif = Instrument_Serif({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://rishithc.com"),
-  title: "rishith chennupati — index",
+  title: "rishith chennupati · index",
   description:
     "Rishith Chennupati. Fifteen years old, San Jose, CA. Building ios apps, ai systems, web platforms, and hardware. An index of everything.",
   keywords: [
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Rishith Chennupati" }],
   openGraph: {
-    title: "rishith chennupati — index",
+    title: "rishith chennupati · index",
     description:
       "Fifteen years old, San Jose, CA. Building ios apps, ai systems, web platforms, and hardware. An index of everything.",
     url: "https://rishithc.com",
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "rishith chennupati — index",
+    title: "rishith chennupati · index",
     description: "Fifteen. San Jose. iOS, AI, web, hardware. An index.",
   },
 };

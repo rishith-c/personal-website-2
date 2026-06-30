@@ -46,13 +46,13 @@ export default function NowBlock({ topLanguages }: NowBlockProps) {
 
         <div className="space-y-7 text-[17px] leading-[1.65] text-[color:var(--color-ink-soft)] sm:text-[18px]">
           <RevealParagraph
-            lead="On-device intelligence."
-            text="Apple is opening up real foundation-model APIs on the phone. The thing I want to build is software that thinks where it lives — no round trip, no privacy tax. Most of my experiments right now live in that space: small models doing useful work locally."
+            lead="On-device models."
+            text="Apple finally put real model APIs on the phone itself. I want apps that run the model right there, no server round trip and nothing leaving the device. Most of what I'm building lately is some version of that: small models doing real work locally."
           />
 
           <RevealParagraph
-            lead="Builder > user."
-            text="I'd rather ship five rough things this month than one polished thing this year. Most of what's in the index started as a hackathon weekend or a 2am idea. Some of them turned into apps with real users. That's the loop I'm optimizing for."
+            lead="I'd rather build than browse."
+            text="I'd take five rough things this month over one perfect thing next year. A lot of what's in the index started as a hackathon weekend or a 2am idea I couldn't drop. A few of them turned into apps people actually use. That's the part I keep coming back for."
           />
 
           <RevealParagraph

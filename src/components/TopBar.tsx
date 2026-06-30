@@ -17,7 +17,7 @@ export default function TopBar({ totalRepos }: TopBarProps) {
         <Link
           href="/"
           className="press group inline-flex items-center gap-2 font-mono text-[12.5px] text-[color:var(--color-ink)]"
-          aria-label="rishith chennupati — home"
+          aria-label="rishith chennupati, home"
         >
           <span className="inline-block size-1.5 rounded-full bg-[color:var(--color-ink)] transition-colors group-hover:bg-[color:var(--color-accent)]" aria-hidden />
           <span>rishith.c</span>
@@ -32,6 +32,12 @@ export default function TopBar({ totalRepos }: TopBarProps) {
             className="press rounded-sm px-2 py-1 text-[color:var(--color-ink-soft)] hover:text-[color:var(--color-ink)]"
           >
             index
+          </a>
+          <a
+            href="#robotics"
+            className="press hidden rounded-sm px-2 py-1 text-[color:var(--color-ink-soft)] hover:text-[color:var(--color-ink)] sm:inline-block"
+          >
+            robotics
           </a>
           <a
             href="#now"

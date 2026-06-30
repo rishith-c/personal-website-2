@@ -263,7 +263,7 @@ function Row({ repo, index, isHovered, isHighlight, onEnter, onLeave }: RowProps
         target="_blank"
         rel="noopener noreferrer"
         className="relative block py-5 transition-colors duration-150 ease-out hover:bg-[color:var(--color-bg-elevated)]"
-        aria-label={`${repo.name} on GitHub — ${repo.description ?? "no description"}`}
+        aria-label={`${repo.name} on GitHub. ${repo.description ?? "no description"}`}
       >
         {/* highlight bar on left (only for top-ranked repo) */}
         {isHighlight ? (
@@ -309,7 +309,7 @@ function Row({ repo, index, isHovered, isHighlight, onEnter, onLeave }: RowProps
               className="inline-block size-1.5 rounded-full"
               style={{ backgroundColor: langColor }}
             />
-            {repo.language?.toLowerCase() ?? "—"}
+            {repo.language?.toLowerCase() ?? "·"}
           </span>
 
           <span className="tabular text-right font-mono text-[12px] text-[color:var(--color-ink-soft)]">
@@ -345,7 +345,7 @@ function Row({ repo, index, isHovered, isHighlight, onEnter, onLeave }: RowProps
                   className="inline-block size-1.5 rounded-full"
                   style={{ backgroundColor: langColor }}
                 />
-                {repo.language?.toLowerCase() ?? "—"}
+                {repo.language?.toLowerCase() ?? "·"}
               </span>
               {repo.stars > 0 ? <span>★ {repo.stars}</span> : null}
             </div>

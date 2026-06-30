@@ -117,14 +117,17 @@ button, a { -webkit-tap-highlight-color: transparent; }
 
 .reveal-on-view {
   opacity: 0;
-  transform: translateY(22px);
+  transform: translateY(28px);
+  filter: blur(9px);
   transition:
-    opacity 820ms var(--ease-out-strong),
-    transform 820ms var(--ease-out-strong);
+    opacity 1000ms var(--ease-out-strong),
+    transform 1000ms var(--ease-out-strong),
+    filter 1000ms var(--ease-out-strong);
 }
 .reveal-on-view[data-revealed="true"] {
   opacity: 1;
   transform: translateY(0);
+  filter: blur(0);
 }
 
 /* Same idea but for line-mask blocks. The mask stays static; the
@@ -143,14 +146,17 @@ button, a { -webkit-tap-highlight-color: transparent; }
 /* Children stagger — used to fade in groups (filter pills, list items). */
 .reveal-stagger > * {
   opacity: 0;
-  transform: translateY(10px);
+  transform: translateY(16px);
+  filter: blur(6px);
   transition:
-    opacity 620ms var(--ease-out-strong),
-    transform 620ms var(--ease-out-strong);
+    opacity 720ms var(--ease-out-strong),
+    transform 720ms var(--ease-out-strong),
+    filter 720ms var(--ease-out-strong);
 }
 .reveal-stagger[data-revealed="true"] > * {
   opacity: 1;
   transform: translateY(0);
+  filter: blur(0);
 }
 .reveal-stagger[data-revealed="true"] > *:nth-child(1)  { transition-delay: 0ms; }
 .reveal-stagger[data-revealed="true"] > *:nth-child(2)  { transition-delay: 50ms; }
@@ -166,15 +172,18 @@ button, a { -webkit-tap-highlight-color: transparent; }
 /* ─── Row reveal used by the index ──────────────────────────────────── */
 .reveal-row {
   opacity: 0;
-  transform: translateY(10px);
+  transform: translateY(14px);
+  filter: blur(5px);
   transition:
-    opacity 620ms var(--ease-out-strong),
-    transform 620ms var(--ease-out-strong);
+    opacity 720ms var(--ease-out-strong),
+    transform 720ms var(--ease-out-strong),
+    filter 720ms var(--ease-out-strong);
   transition-delay: calc(var(--i, 0) * 28ms);
 }
 .reveal-row[data-revealed="true"] {
   opacity: 1;
   transform: translateY(0);
+  filter: blur(0);
 }
 
 /* ─── Live "now" indicator dot ──────────────────────────────────────── */
@@ -295,17 +304,9 @@ html.lenis-smooth::-webkit-scrollbar { width: 0; }
   transform-style: preserve-3d;
 }
 
-/* Abstract hero object — slow rotations. */
-@keyframes abstractSpin { to { transform: rotate(360deg); } }
-@keyframes abstractSpinRev { to { transform: rotate(-360deg); } }
-.abstract-spin { animation: abstractSpin 60s linear infinite; }
-.abstract-spin-rev { animation: abstractSpinRev 90s linear infinite; }
-.abstract-orbit { animation: abstractSpin 14s linear infinite; }
-
 @media (prefers-reduced-motion: reduce) {
   .spatial-card { transform: none !important; }
   .spatial-layer { transform: none !important; }
-  .abstract-spin, .abstract-spin-rev, .abstract-orbit { animation: none !important; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -316,6 +317,10 @@ html.lenis-smooth::-webkit-scrollbar { width: 0; }
     scroll-behavior: auto !important;
   }
   .rise-line, .reveal-line-inner { transform: none !important; }
-  .reveal-on-view, .reveal-stagger > * { opacity: 1 !important; transform: none !important; }
+  .reveal-on-view, .reveal-stagger > *, .reveal-row {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
   .hero-shell { transform: none !important; opacity: 1 !important; }
 }

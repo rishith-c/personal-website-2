@@ -36,9 +36,9 @@ export default function Colophon() {
         </h2>
 
         <p className="reveal-on-view mt-10 max-w-[44ch] text-[15px] leading-[1.6] text-[color:var(--color-ink-soft)] sm:text-[16px]">
-          Best place to find me is email. If you&rsquo;re building something
-          interesting in iOS, AI, or hardware — especially the messy
-          intersection — I want to hear about it.
+          Email is the best way to reach me. If you&rsquo;re building something
+          in iOS, AI, or hardware, especially where those overlap, I&rsquo;d
+          like to hear about it.
         </p>
 
         <div className="reveal-stagger mt-20 grid gap-6 border-t border-[color:var(--color-rule-soft)] pt-8 font-mono text-[12px] text-[color:var(--color-ink-mute)] sm:grid-cols-3">

@@ -82,11 +82,11 @@ export default function Hero({
           className="fade-up max-w-[44ch] text-[17px] leading-[1.55] text-[color:var(--color-ink-soft)] sm:text-[18px]"
           style={{ ["--i" as never]: 6 }}
         >
-          Fifteen years old. I&rsquo;ve been writing code since middle school and
-          shipping things ever since &mdash; iOS apps, on-device AI, web
-          platforms, autonomous hardware. The list below is everything I&rsquo;ve
-          made public, ranked the way I&rsquo;d rank it: by what I care about,
-          not by what trended.
+          I&rsquo;m fifteen. I started writing code in middle school and haven&rsquo;t
+          really stopped: iOS apps, on-device AI, web stuff, and now a drone.
+          The list below is everything I&rsquo;ve put out in public, ordered the
+          way I&rsquo;d actually order it, by what I care about and not by what was
+          trending that week.
         </p>
 
         {/* abstract spatial object — the hero element */}
