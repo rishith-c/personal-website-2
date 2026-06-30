@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
-import { Platypi, Geist, Geist_Mono } from "next/font/google";
+import { Playfair_Display, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const platypi = Platypi({
+// High-contrast display serif with ball terminals, matching the
+// "Master the foundations / Build anything" reference.
+const playfair = Playfair_Display({
   subsets: ["latin"],
-  weight: ["300", "400", "500"],
+  weight: ["400", "500", "600"],
   style: ["normal", "italic"],
-  variable: "--font-platypi",
+  variable: "--font-display",
   display: "swap",
 });
 
@@ -36,7 +38,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${platypi.variable} ${geist.variable} ${geistMono.variable}`}>
+    <html lang="en" className={`${playfair.variable} ${geist.variable} ${geistMono.variable}`}>
       <body>{children}</body>
     </html>
   );
